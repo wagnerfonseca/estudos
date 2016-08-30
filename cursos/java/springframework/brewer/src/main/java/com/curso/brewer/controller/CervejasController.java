@@ -28,5 +28,10 @@ public class CervejasController {
 		attributes.addAttribute("mensagem", "Cerveja Salva com Sucesso!");
 		return "redirect:/cervejas/novo";
 	}
+	
+	@RequestMapping("/cervejas/cadastro")
+	public String cadstro() {
+		return "cerveja/cadastro-produto";
+	}
 
 }
