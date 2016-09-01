@@ -2,140 +2,90 @@
 <html>
 
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
   <!--Import Google Icon Font-->
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <!--Import materialize.css-->
   <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
 
-  <!--Let browser know website is optimized for mobile-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style type="text/css">
+
+    
+
+    fieldset {
+      border: 0 none;
+    }
+  </style>
 </head>
 
 <body>
 
-  <header>
-    <nav class="light-blue lighten-1" role="navigation">
-      <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Logo</a>
-
-        <ul class="right hide-on-med-and-down">
-          <li><a href="#">Navbar Link</a></li>
-        </ul>
-
-        <ul id="slide-out" class="side-nav">
-          <li>
-            <div class="userView">
-              <img class="background" src="images/office.jpg">
-              <a href="#!user"><img class="circle" src="images/Person-Male-80.png"></a>
-              <a href="#!name"><span class="white-text name">John Doe</span></a>
-              <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
-            </div>
-          </li>
-          <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-          <li><a href="#!">Second Link</a></li>
-          <li>
-            <div class="divider"></div>
-          </li>
-          <li><a class="subheader">Subheader</a></li>
-          <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
-        </ul>
-        <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
-      </div>
-    </nav>
-
-    <nav>
-    <div class="nav-wrapper">
-      <form>
-        <div class="input-field">
-          <input id="search" type="search" required>
-          <label for="search"><i class="material-icons">search</i></label>
-          <i class="material-icons">close</i>
+  <div class="navbar-fixed">
+    <nav class="top-nav">
+      <div class="container">
+        <div class="col s12 m8 offset-m2 l8 offset-l2">
+        <div class="nav-wrapper"><a class="page-title">Cards</a></div>
         </div>
-      </form>
-    </div>
-  </nav>
-
-  </header>
-
-
-  <!-- Page Layout here -->
-  <main>
-    <div class="row">
-
-      <div class="col s12 m4 l3 grey">
-        <!-- Note that "m4 l3" was added -->
-        <!-- Grey navigation panel
-
-              This content will be:
-          3-columns-wide on large screens,
-          4-columns-wide on medium screens,
-          12-columns-wide on small screens  -->
-        <p>Teste</p>
-
       </div>
+    </nav>  
+  </div>
 
+  <div class="container">
+        
+    <div class="row">
+      <div class="col s12 m8 offset-m2 l8 offset-l2">
 
-      <div class="col s12 m8 l9 teal">
-        <!-- Note that "m8 l9" was added -->
-        <!-- Teal page content
+        <div class="card">
+          <div class="card-content">
 
-              This content will be:
-          9-columns-wide on large screens,
-          8-columns-wide on medium screens,
-          12-columns-wide on small screens  -->
+            <form>
 
+              <fieldset>
+                <div class="row">
+                  <span class="card-title">Onde você comprou nossos convites?</span>
+                  <p>Confirme o local onde você comprou nossos convites</p>
+                </div>
 
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input placeholder="Sobre Nome" id="firstname" type="text" class="validate">
+                    <label for="firstname" class="active">First Name</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input placeholder="Sobre Nome" id="lastname" type="text" class="validate">
+                    <label for="lastname" class="active">Last Name</label>
+                  </div>
+                </div>
 
-        <h4>Teste</h4>
+                <div class="row">
+                  <div class="input-field col l6 s12">
+                    <input id="endereco" type="text" class="validate">
+                    <label for="endereco" class="active">Endereco</label>
+                  </div>
+                  <div class="input-field col l6 s12">
+                    <input placeholder="Bairro" id="bairro" type="text" class="validate">
+                    <label for="bairro" class="active">Bairro</label>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+          </div>
 
-        <div class="col s12 m6 l6">
-          <div class="card-panel hoverable"> Hoverable Card Panel</div>
+          <div class="card-action">
+            <input type="submit" class="btn" value="Sign In">
+          </div>
+
         </div>
+        <!-- End card -->
 
-        <div class="col s12 m6 l6">
-          <div class="card-panel hoverable">Outher cards</div>
-        </div>
-
-
-
-
-      </div>
-
-    </div>
-
-
-    <div class="row">
-      <div class="col s12 light-blue lighten-1">
-        <p>s12</p>
-      </div>
-      <div class="col s12 m4 l2 yellow lighten-4">
-        <p>s12 m4</p>
-      </div>
-      <div class="col s12 m4 l8 yellow lighten-4">
-        <p>s12 m4</p>
-      </div>
-      <div class="col s12 m4 l2 yellow lighten-4">
-        <p>s12 m4</p>
       </div>
     </div>
-    <div class="row">
-      <div class="col s12 m6 l3 cyan lighten-2">
-        <p>s12 m6 l3</p>
-      </div>
-      <div class="col s12 m6 l3 cyan lighten-2">
-        <p>s12 m6 l3</p>
-      </div>
-      <div class="col s12 m6 l3 cyan lighten-2">
-        <p>s12 m6 l3</p>
-      </div>
-      <div class="col s12 m6 l3 cyan lighten-2">
-        <p>s12 m6 l3</p>
-      </div>
-    </div>
-
-
-  </main>
-
-
+  </div>
 
   <!--Import jQuery before materialize.js-->
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
