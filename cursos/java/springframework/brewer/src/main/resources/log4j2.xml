@@ -8,7 +8,15 @@
 	</Appenders>
 
 	<Loggers>
-		<logger name="com.curso.brewer.controller" level="DEBUG"/>		
+		<logger name="com.curso.brewer.controller" level="DEBUG"/>	
+		
+		<!-- Responsavel por TODOS os log do Hibernate 
+		<logger name="org.hibernate" level="DEBUG" /> -->
+		
+		<!-- Responsavel pelos logs das transacao org.hibernate.engine.transaction.internal -->			
+		
+		<!-- Responsavel por todos os log do Hibernate Apenas o SQL -->
+		<logger name="org.hibernate.SQL" level="DEBUG" /> 	
 	
 		<Root level="ERROR">
 			<AppenderRef ref="Console" />			
