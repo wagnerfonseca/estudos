@@ -1,5 +1,7 @@
 package com.curso.brewer.controller;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,9 @@ public class CervejasController {
 	
 	@RequestMapping("/cervejas/novo")
 	public String novo(Cerveja cerveja) {
-		cervejas.findAll();
+		Optional<Cerveja> cervejaOpt = cervejas.findBySkuIgnoreCase("ASD");
+		System.out.println(cervejaOpt.isPresent());
+		
 		return "cerveja/CadastroCerveja";
 	}
 	
