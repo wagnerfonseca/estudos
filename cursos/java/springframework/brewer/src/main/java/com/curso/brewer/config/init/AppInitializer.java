@@ -3,6 +3,7 @@ package com.curso.brewer.config.init;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.curso.brewer.config.JPAConfig;
+import com.curso.brewer.config.ServiceConfig;
 import com.curso.brewer.config.WebConfig;
 
 /*
@@ -18,7 +19,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		 * Configurações que serão feitas na parte "mais baixa" do seu sistema  
 		 * 
 		 * */
-		return new Class<?>[] {  JPAConfig.class };
+		return new Class<?>[] {  JPAConfig.class, ServiceConfig.class };
 	}
 
 	@Override

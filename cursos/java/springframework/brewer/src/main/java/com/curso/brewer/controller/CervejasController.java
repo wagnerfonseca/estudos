@@ -14,12 +14,16 @@ import com.curso.brewer.model.Cerveja;
 import com.curso.brewer.model.Origem;
 import com.curso.brewer.model.Sabor;
 import com.curso.brewer.repository.Estilos;
+import com.curso.brewer.service.CadastroCervejaService;
 
 @Controller
 public class CervejasController {
 	
 	@Autowired
 	private Estilos estilos;
+	
+	@Autowired
+	private CadastroCervejaService service;
 		
 	@RequestMapping("/cervejas/novo")
 	public ModelAndView novo(Cerveja cerveja) {
@@ -34,13 +38,14 @@ public class CervejasController {
 	
 	@RequestMapping(value = "/cervejas/novo", method = RequestMethod.POST)
 	public ModelAndView cadastrar(@Valid Cerveja cerveja, BindingResult result, RedirectAttributes attributes) {
-		/*if (result.hasErrors()) {			
+		if (result.hasErrors()) {			
 			return novo(cerveja);
-		}*/
+		}
 	
-		System.out.println("[Entity] Estilo-> " + cerveja.getEstilo());
+		service.salvar(cerveja);
 		
-		attributes.addAttribute("mensagem", "Cerveja Salva com Sucesso!");
+		attributes.addFlashAttribute("mensagem", "Cerveja Salva com Sucesso!");
+		
 		return new ModelAndView("redirect:/cervejas/novo");
 	}
 	
