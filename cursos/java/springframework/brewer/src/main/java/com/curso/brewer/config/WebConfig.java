@@ -6,6 +6,8 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.support.DefaultFormattingConversionService;
+import org.springframework.format.support.FormattingConversionService;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -16,6 +18,8 @@ import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
+
+import com.curso.brewer.controller.converter.EstilosConverter;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
@@ -81,4 +85,13 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
 	}
 
+	// Necessário registar os conversores (Converter)
+	@Bean
+	public FormattingConversionService mvcConversionService() {
+		DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService();
+		// Converter de Estilo
+		conversionService.addConverter(new EstilosConverter());
+		
+		return conversionService;
+	}
 }
