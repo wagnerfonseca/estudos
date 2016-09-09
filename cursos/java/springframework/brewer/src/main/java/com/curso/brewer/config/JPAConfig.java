@@ -13,12 +13,17 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.curso.brewer.model.Cerveja;
 import com.curso.brewer.repository.Cervejas;
 
 @Configuration
-@EnableJpaRepositories(basePackageClasses = Cervejas.class) // Habilitar a aplicação para repositorios. Busca através da classe(criando um vinculo) o pacote basico de repositorios 
+//Habilitar a aplicação para repositorios. Busca através da classe(criando um vinculo) o pacote basico de repositorios
+// enableDefaultTransactions=  Desabilitando as transações automaticas com o banco de dados
+@EnableJpaRepositories(basePackageClasses = Cervejas.class, enableDefaultTransactions = false)
+// Com essa anotação eu mesmo vou gerenciar as transações com o Banco de dados
+@EnableTransactionManagement
 public class JPAConfig {
 	
 	@Bean

@@ -2,6 +2,7 @@ package com.curso.brewer.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.curso.brewer.model.Cerveja;
 import com.curso.brewer.repository.Cervejas;
@@ -17,6 +18,8 @@ public class CadastroCervejaService {
 	@Autowired
 	private Cervejas cervejas;
 	
+	// Com essa anotação agora eu estou responsavel por controlar as transações
+	@Transactional
 	public void salvar(Cerveja cerveja) {
 		cervejas.save(cerveja);
 	}
