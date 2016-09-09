@@ -17,6 +17,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.curso.brewer.validation.SKU;
+
 @Entity
 @Table(name="cerveja")
 public class Cerveja implements Serializable {
@@ -24,22 +26,33 @@ public class Cerveja implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long codigo;
+	
+	@SKU
 	@NotBlank(message = "O campo SKU é obrigatório")
 	private String sku;
+	
 	@NotBlank(message = "O campo \"nome\" é obrigatório")
 	private String nome;
+	
 	@Size(min=1, max=50, message="O tamanho da descrição deve estar entre 1 e 50 caracteres")
-	private String descricao;	
+	private String descricao;
+	
 	private BigDecimal valor;
+	
 	@Column(name="teor_alcoolico")
 	private BigDecimal teorAlcoolico;	
+	
 	private BigDecimal comissao;
+	
 	@Column(name="quantidade_estoque")
 	private Integer quantidadeEstoque;	
+	
 	@Enumerated(EnumType.STRING)
 	private Origem origem;
+	
 	@Enumerated(EnumType.STRING)
 	private Sabor sabor;	
+	
 	@ManyToOne
 	@JoinColumn(name="codigo_estilo")
 	private Estilo estilo;
