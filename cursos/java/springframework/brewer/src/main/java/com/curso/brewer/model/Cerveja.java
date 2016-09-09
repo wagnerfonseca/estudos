@@ -24,11 +24,11 @@ public class Cerveja implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long codigo;
-	@NotBlank(message = "O campo SKU é obrigatório''")
+	@NotBlank(message = "O campo SKU é obrigatório")
 	private String sku;
-	@NotBlank(message = "O campo nome é obrigatório")
+	@NotBlank(message = "O campo \"nome\" é obrigatório")
 	private String nome;
-	@Size(min=1, max=50, message="A tamanho da descrição deve estar entre 1 e 50 caracteres")
+	@Size(min=1, max=50, message="O tamanho da descrição deve estar entre 1 e 50 caracteres")
 	private String descricao;	
 	private BigDecimal valor;
 	@Column(name="teor_alcoolico")
