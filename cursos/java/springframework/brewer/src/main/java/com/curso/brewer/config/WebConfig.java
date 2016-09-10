@@ -94,6 +94,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 	// Necessário registar os conversores (Converter)
 	@Bean
 	public FormattingConversionService mvcConversionService() {
+		// Exmplo para converter um entidade
 		DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService();
 		// Converter de Estilo
 		conversionService.addConverter(new EstilosConverter());
