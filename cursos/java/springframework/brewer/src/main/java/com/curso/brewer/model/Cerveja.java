@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
@@ -74,6 +76,16 @@ public class Cerveja implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="codigo_estilo")
 	private Estilo estilo;
+	
+	/* ----------------------------------
+	 Métodos de Callback do JPA
+	 São metodos que são executados durante o processo de persitencia no banco de dados
+	 Sempre declarados como void 
+	------------------------------------- */
+	@PrePersist@PreUpdate
+	private void prePersistUpdate() {
+		sku = sku.toUpperCase();
+	}
 
 	public Long getCodigo() {
 		return codigo;

@@ -58,11 +58,7 @@ public class EstilosController {
 			return ResponseEntity.badRequest().body(result.getFieldError("nome").getDefaultMessage() ); //BAD REQUEST ERRO CODIGO HTTP 400
 		}
 		
-		try {
-			estilo = service.salvar(estilo);
-		} catch(NomeEstiloJaCadastradoException e) {
-			return ResponseEntity.badRequest().body(e.getMessage()); //BAD REQUEST ERRO CODIGO HTTP 400
-		}		
+		estilo = service.salvar(estilo);		
 		
 		return ResponseEntity.ok(estilo); //CODIGO HTTP 200 OK
 	}
