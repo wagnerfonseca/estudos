@@ -26,6 +26,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import com.curso.brewer.controller.converter.EstilosConverter;
+import com.curso.brewer.thymeleaf.BrewerDialect;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
@@ -69,6 +70,9 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		
 		// adicionar um novo Dialeto
 		engine.addDialect(new LayoutDialect());
+		
+		// adicionar o Dialeto customizado
+		engine.addDialect(new BrewerDialect());
 		
 		return engine;
 	}
