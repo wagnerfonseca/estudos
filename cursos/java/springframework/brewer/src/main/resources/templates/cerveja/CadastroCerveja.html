@@ -23,12 +23,11 @@
 
 	<div class="container-fluid">
 	
-		<th:block th:include="fragments/MensagemSucesso"></th:block>
-
+		<!--/*/ <th:block th:include="fragments/MensagemSucesso :: msg-success"></th:block> /*/-->
+		
 		<form method="POST" th:object="${cerveja}" class="form-vertical  js-form-loading">
 		
-			<!-- Importa Mensagem de Erro -->
-			<th:block th:include="fragments/MensagensErroValidacao"></th:block>
+			<!--/*/ <th:block th:include="fragments/MensagensErroValidacao :: msg-error"></th:block> /*/-->
 	
 			<div class="row">
 				<div class="col-sm-2  form-group"  brewer:classforerror="sku">
