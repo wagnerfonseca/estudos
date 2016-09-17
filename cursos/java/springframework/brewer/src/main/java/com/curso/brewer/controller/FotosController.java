@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.curso.brewer.dto.FotoDTO;
 import com.curso.brewer.storage.FotoStorageRunnable;
 
 /*
@@ -28,8 +29,8 @@ public class FotosController {
 	 * com um DeferredResult a aplicação pode produzir o resultado em uma thread de sua escolha
 	 * */
 	@PostMapping // substitui a anaotação @RequestMapping(method = RequestMethod.POST)
-	public DeferredResult<String> upload(@RequestParam("files[]") MultipartFile[] files) {
-		DeferredResult<String> result = new DeferredResult<>();
+	public DeferredResult<FotoDTO> upload(@RequestParam("files[]") MultipartFile[] files) {
+		DeferredResult<FotoDTO> result = new DeferredResult<>();
 		
 		Thread thread = new Thread(new FotoStorageRunnable(files, result));
 		thread.start();
