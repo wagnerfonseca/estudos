@@ -5,7 +5,7 @@
 	layout:decorator="'layout/LayoutPadrao'"	
 	xmlns:brewer="http://brewer.algaworks.com"
 	>
-<!-- necessario criar o namespace do dialeto que eu quero utilizar registradoe em BrewerDialect . o enderelo http é livre -->	
+<!-- necessario criar o namespace do dialeto que eu quero utilizar registrado em BrewerDialect . o enderelo http é livre -->	
 <head>
 	<title>Cadastro de cerveja</title>
 	
@@ -147,7 +147,8 @@
 		var settings = {
 				type: 'json',
 				filelimit: 1,
-				allow: '*.(jpg|jpeg|png)'
+				allow: '*.(jpg|jpeg|png)',
+				action: '/brewer/fotos'
 		};
 		
 		UIkit.uploadSelect($('#upload-select'), settings);

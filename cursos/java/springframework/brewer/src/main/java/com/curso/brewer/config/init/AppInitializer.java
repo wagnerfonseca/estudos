@@ -1,5 +1,8 @@
 package com.curso.brewer.config.init;
 
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration.Dynamic;
+
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.curso.brewer.config.JPAConfig;
@@ -39,4 +42,13 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		return new String[] {"/"};
 	}
 
+	@Override
+	protected void customizeRegistration(Dynamic registration) {	
+		/*
+		 * Para registrar o tipo de conteudo Content-Type:multipart/form-data
+		 * 
+		 * A String vazia, o servidor web fica resposavel por decidir o local onde o arquivo vai ser escrito 
+		 * */
+		registration.setMultipartConfig(new MultipartConfigElement(""));
+	}
 }
