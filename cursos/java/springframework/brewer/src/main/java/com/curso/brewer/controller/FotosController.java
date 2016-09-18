@@ -1,5 +1,6 @@
 package com.curso.brewer.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -8,6 +9,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.curso.brewer.dto.FotoDTO;
+import com.curso.brewer.storage.FotoStorage;
 import com.curso.brewer.storage.FotoStorageRunnable;
 
 /*
@@ -16,6 +18,9 @@ import com.curso.brewer.storage.FotoStorageRunnable;
 @RestController // Adiciona a anotacao @Controller e @ResponseBody para  os retornos de todos os métodos 
 @RequestMapping("/fotos")
 public class FotosController {
+	
+	@Autowired
+	private FotoStorage fotoStorage;
 	
 	
 	/*
@@ -32,7 +37,7 @@ public class FotosController {
 	public DeferredResult<FotoDTO> upload(@RequestParam("files[]") MultipartFile[] files) {
 		DeferredResult<FotoDTO> result = new DeferredResult<>();
 		
-		Thread thread = new Thread(new FotoStorageRunnable(files, result));
+		Thread thread = new Thread(new FotoStorageRunnable(files, result, fotoStorage));
 		thread.start();
 		
 		return result;
