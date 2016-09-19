@@ -2,6 +2,7 @@ package com.curso.brewer.storage.local;
 
 import static java.nio.file.FileSystems.getDefault;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -49,7 +50,19 @@ public class FotoStorageLocal implements FotoStorage {
 
 	@Override
 	public void salvarTemporariamente(MultipartFile[] files) {
-		System.out.println("Salvando temporariamente");		
+		if (files != null && files.length > 0) {
+			
+			MultipartFile arquivo = files[0];
+			
+			String nomeArquivo = this.localTemporario.toAbsolutePath().toString() + getDefault().getSeparator() + arquivo.getOriginalFilename();
+			
+			try {
+				arquivo.transferTo(new File( nomeArquivo ));			
+			} catch (IOException e) {
+				throw new RuntimeException("Erro ao salvar o arquivo no diretório " + this.localTemporario.toAbsolutePath().toString(), e);				
+			}			
+			
+		}
 	}
 	
 }
