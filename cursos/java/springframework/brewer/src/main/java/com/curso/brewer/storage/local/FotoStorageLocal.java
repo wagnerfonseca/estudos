@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,26 @@ public class FotoStorageLocal implements FotoStorage {
 		criarPastas();
 	}
 
+	@Override
+	public String salvarTemporariamente(MultipartFile[] files) {
+		String nomeArquivo = null;
+		if (files != null && files.length > 0) {			
+			MultipartFile arquivo = files[0];
+			nomeArquivo = renomearNomeArquivo(arquivo.getOriginalFilename());
+			String diretorioArquivo = 
+					this.localTemporario.toAbsolutePath().toString() + 
+					getDefault().getSeparator() + 
+					nomeArquivo ;			
+			try {
+				arquivo.transferTo(new File( diretorioArquivo ));			
+			} catch (IOException e) {
+				throw new RuntimeException("Erro ao salvar o arquivo no diretório " + this.localTemporario.toAbsolutePath().toString(), e);				
+			}			
+		}
+		
+		return nomeArquivo;
+	}
+	
 	private void criarPastas() {
 		try {
 			Files.createDirectories(this.local);
@@ -47,22 +68,13 @@ public class FotoStorageLocal implements FotoStorage {
 		}
 		
 	}
-
-	@Override
-	public void salvarTemporariamente(MultipartFile[] files) {
-		if (files != null && files.length > 0) {
-			
-			MultipartFile arquivo = files[0];
-			
-			String nomeArquivo = this.localTemporario.toAbsolutePath().toString() + getDefault().getSeparator() + arquivo.getOriginalFilename();
-			
-			try {
-				arquivo.transferTo(new File( nomeArquivo ));			
-			} catch (IOException e) {
-				throw new RuntimeException("Erro ao salvar o arquivo no diretório " + this.localTemporario.toAbsolutePath().toString(), e);				
-			}			
-			
-		}
+	
+	private String renomearNomeArquivo(String nomeOriginal) {
+		String novoNome = UUID.randomUUID().toString() + nomeOriginal.substring(nomeOriginal.lastIndexOf('.'));
+		
+		LOG.debug(String.format("Novo nome Foto %s", novoNome));
+		
+		return novoNome;
 	}
 	
 }
