@@ -54,6 +54,19 @@ public class FotoStorageLocal implements FotoStorage {
 		return nomeArquivo;
 	}
 	
+	@Override
+	public byte[] recuperaFotoTemporaria(String nome) {		
+		try {
+			/* o método resolve acrescenta neste endereço o tipo do separador conforme o sistema operacional  
+			 * junto com o path que você esta utilizando. ele ja faz uma concatenacao de enderecos */ 
+			Path arquivo = this.localTemporario.resolve(nome); 
+			/* Files.readAllBytes le todos o bytes do arquivos ate o final se não houver nenhuma exceção lançada */
+			return Files.readAllBytes(arquivo);
+		} catch (IOException e) {
+			throw new RuntimeException("Erro salvando a foto na pasta temporária", e);
+		}
+	}
+	
 	private void criarPastas() {
 		try {
 			Files.createDirectories(this.local);
@@ -75,6 +88,6 @@ public class FotoStorageLocal implements FotoStorage {
 		LOG.debug(String.format("Novo nome Foto %s", novoNome));
 		
 		return novoNome;
-	}
+	}	
 	
 }

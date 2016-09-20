@@ -1,6 +1,8 @@
 package com.curso.brewer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +43,18 @@ public class FotosController {
 		thread.start();
 		
 		return result;
+	}
+	
+	/*
+	 * Quero mostrar a imagem na pagina web
+	 * O nome do parametro pode ser o mesmo da anotação, 
+	 * em caso de nomes diferentes deve ser especificado na anotação @PathVariable("nome")
+	 * 
+	 * (dois pontos)(:) para utilzr um expressão regular
+	 * */
+	@GetMapping("/temp/{nome:.*}")
+	public byte[] recuperarFotoTemporaria(@PathVariable String nome) { 
+		return fotoStorage.recuperaFotoTemporaria(nome);	
 	}
 
 }
