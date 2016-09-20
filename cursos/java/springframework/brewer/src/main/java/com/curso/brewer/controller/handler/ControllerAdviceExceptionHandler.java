@@ -17,6 +17,6 @@ public class ControllerAdviceExceptionHandler {
 	//O retorno do tipo <String> é o unico tipo que vai ser preenchido o .body
 	@ExceptionHandler(NomeEstiloJaCadastradoException.class)
 	public ResponseEntity<String> handleNomeEstiloJaCadastradoException(NomeEstiloJaCadastradoException e) {
-		return ResponseEntity.badRequest().body(e.getMessage());
+		return ResponseEntity.badRequest().body(e.getMessage()); // o badrequest vai retorna em codigo http 400
 	}
 }

@@ -50,7 +50,7 @@ public class FotosController {
 	 * O nome do parametro pode ser o mesmo da anotação, 
 	 * em caso de nomes diferentes deve ser especificado na anotação @PathVariable("nome")
 	 * 
-	 * (dois pontos)(:) para utilzr um expressão regular
+	 * (dois pontos)(:) para utilzar uma expressão regular
 	 * */
 	@GetMapping("/temp/{nome:.*}")
 	public byte[] recuperarFotoTemporaria(@PathVariable String nome) { 
