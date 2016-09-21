@@ -2,20 +2,14 @@ var Brewer = Brewer || {};
 
 Brewer.UploadFoto = (function() {
 	
-	function UploadFoto() {
-		
+	function UploadFoto() {		
 		this.inputNomeFoto = $('input[name=foto]');
-		this.inputContentType = $('input[name=contentType]');
-		
+		this.inputContentType = $('input[name=contentType]');		
 		this.htmlFotoCervejaTemplate = $('#foto-cerveja').html();
-		this.template = Handlebars.compile(this.htmlFotoCervejaTemplate);
-		
-		// htmlFotoCerveja = template({nomeFoto: resposta.nome});
-		
-		this.containerFotoCerveja = $('.js-container-foto-cerveja');
-		
-		this.uploadDrop = $('#upload-drop');
-		
+		this.template = Handlebars.compile(this.htmlFotoCervejaTemplate);		
+		this.containerFotoCerveja = $('.js-container-foto-cerveja');		
+		this.uploadDrop = $('#upload-drop');		
+		this.urlFotos = this.containerFotoCerveja.data('url-fotos');		
 	}
 	
 	UploadFoto.prototype.iniciar = function() {
@@ -24,7 +18,7 @@ Brewer.UploadFoto = (function() {
 				filelimit: 1,
 				allow: '*.(jpg|jpeg|png)',
 				// acessar o atributo que contem a url da action para ser executada
-				action: this.containerFotoCerveja.data('url-fotos'),
+				action: this.urlFotos,
 				// 'this' eu passo como parametro para para fazer um vinculo com o contexto do objeto que esta em execução.
 				// e assim também ter acesso a todas as propriedades deste objeto
 				complete: onUploadCompleto.bind(this) 
@@ -42,16 +36,21 @@ Brewer.UploadFoto = (function() {
 		var htmlFotoCerveja = this.template({nomeFoto: resposta.nome});
 		this.containerFotoCerveja.append(htmlFotoCerveja);
 		
-		// realizo o seletor nesta parte do codigo por este so ira estar acessivel a partir do carregamento do template
-		$('.js-remove-foto').on('click', onRemoverFoto.bind(this) );
+		// realizo o seletor nesta parte do codigo por este so ira estar acessivel a partir do carregamento do template	
+		$('.js-remove-foto').on('click', onRemoverFoto.bind(this, resposta.nome));
 	}
 	
-	function onRemoverFoto() {
+	function onRemoverFoto(nome) {
+		$.ajax({
+	        url: this.urlFotos + '/temp/' + nome,
+	        method: 'DELETE'
+	    });
+		
 		$('.js-foto-cerveja').remove();
 		this.uploadDrop.removeClass('hidden');
 		this.inputNomeFoto.val('');
 		this.inputContentType.val('');
-	}
+	}	
 	
 	return UploadFoto;
 	

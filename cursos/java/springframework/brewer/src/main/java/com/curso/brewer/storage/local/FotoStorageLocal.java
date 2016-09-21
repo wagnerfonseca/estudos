@@ -67,6 +67,15 @@ public class FotoStorageLocal implements FotoStorage {
 		}
 	}
 	
+	@Override
+	public void apagarFotoTemporaria(String nome) {
+		try {
+			Files.deleteIfExists(this.localTemporario.resolve(nome));
+		} catch(IOException e) {
+			throw new RuntimeException("Erro ao apagar a foto " + nome + " no diretório " + this.localTemporario.toAbsolutePath(), e);
+		}
+	}
+	
 	private void criarPastas() {
 		try {
 			Files.createDirectories(this.local);
@@ -84,9 +93,6 @@ public class FotoStorageLocal implements FotoStorage {
 	
 	private String renomearNomeArquivo(String nomeOriginal) {
 		String novoNome = UUID.randomUUID().toString() + nomeOriginal.substring(nomeOriginal.lastIndexOf('.'));
-		
-		LOG.debug(String.format("Novo nome Foto %s", novoNome));
-		
 		return novoNome;
 	}	
 	

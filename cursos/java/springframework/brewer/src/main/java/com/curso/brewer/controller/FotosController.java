@@ -1,6 +1,7 @@
 package com.curso.brewer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +36,7 @@ public class FotosController {
 	 * DeferredResult proporciona uma alternativa para utilizar uma Função executada para o processamento de uma requisição assincrona.
 	 * com um DeferredResult a aplicação pode produzir o resultado em uma thread de sua escolha
 	 * */
-	@PostMapping // substitui a anaotação @RequestMapping(method = RequestMethod.POST)
+	@PostMapping // substitui a anotação @RequestMapping(method = RequestMethod.POST)
 	public DeferredResult<FotoDTO> upload(@RequestParam("files[]") MultipartFile[] files) {
 		DeferredResult<FotoDTO> result = new DeferredResult<>();
 		
@@ -50,11 +51,17 @@ public class FotosController {
 	 * O nome do parametro pode ser o mesmo da anotação, 
 	 * em caso de nomes diferentes deve ser especificado na anotação @PathVariable("nome")
 	 * 
-	 * (dois pontos)(:) para utilzar uma expressão regular
+	 * (dois pontos)[:] para utilzar uma expressão regular
+	 * [.*] para qualquer extensão de arquivo depois do ponto
 	 * */
 	@GetMapping("/temp/{nome:.*}")
 	public byte[] recuperarFotoTemporaria(@PathVariable String nome) { 
 		return fotoStorage.recuperaFotoTemporaria(nome);	
+	}
+	
+	@DeleteMapping("/temp/{nome:.*}")
+	public void apagaFotoTemporaria(@PathVariable String nome) {
+		fotoStorage.apagarFotoTemporaria(nome);
 	}
 
 }
