@@ -23,6 +23,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.util.StringUtils;
 
 import com.curso.brewer.validation.SKU;
 
@@ -158,6 +159,9 @@ public class Cerveja implements Serializable {
 	}
 	public String getFoto() {
 		return foto;
+	}
+	public String getFotoOrMock() {
+		return !StringUtils.isEmpty(foto) ? foto : "cerveja-mock.png";
 	}
 	public void setFoto(String foto) {
 		this.foto = foto;

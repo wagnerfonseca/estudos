@@ -14,6 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.curso.brewer.storage.FotoStorage;
 
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.name.Rename;
+
 public class FotoStorageLocal implements FotoStorage {
 
 	private static final Logger LOG = LoggerFactory.getLogger(FotoStorageLocal.class);
@@ -68,11 +71,35 @@ public class FotoStorageLocal implements FotoStorage {
 	}
 	
 	@Override
+	public byte[] recuperaFoto(String nome) {
+		try {
+			return Files.readAllBytes(this.local.resolve(nome));
+		} catch (IOException e) {
+			throw new RuntimeException("Erro ao ler a foto", e);
+		}
+	}
+	
+	@Override
 	public void apagarFotoTemporaria(String nome) {
 		try {
 			Files.deleteIfExists(this.localTemporario.resolve(nome));
 		} catch(IOException e) {
 			throw new RuntimeException("Erro ao apagar a foto " + nome + " no diretório " + this.localTemporario.toAbsolutePath(), e);
+		}
+	}
+	
+	@Override
+	public void salvar(String nome){
+		try {
+			Files.move(this.localTemporario.resolve(nome), this.local.resolve(nome));
+		} catch (IOException e) {
+			throw new RuntimeException("Erro ao mover a foto para o loca de destino ", e);			
+		}
+		
+		try {
+			Thumbnails.of(this.local.resolve(nome).toString()).size(40, 68).toFiles(Rename.PREFIX_DOT_THUMBNAIL);
+		} catch (IOException e) {
+			throw new RuntimeException("Erro gerando thumbnail", e);
 		}
 	}
 	

@@ -16,6 +16,7 @@ import com.curso.brewer.model.Origem;
 import com.curso.brewer.model.Sabor;
 import com.curso.brewer.repository.Cervejas;
 import com.curso.brewer.repository.Estilos;
+import com.curso.brewer.repository.filter.CervejaFilter;
 import com.curso.brewer.service.CadastroCervejaService;
 
 @Controller
@@ -57,9 +58,11 @@ public class CervejasController {
 	
 	/*
 	 * para pesquisa a boa prática é utilizar a requisicao GET
+	 * 
+	 * O objeto declarado dentro de th:object, pode ser passado com parametro utilizando tambem o BindingResult
 	 * */
 	@GetMapping
-	public ModelAndView pesquisar() {
+	public ModelAndView pesquisar(CervejaFilter cervejaFilter, BindingResult result) {
 		ModelAndView mv = new ModelAndView("cerveja/PesquisaCervejas");
 		
 		mv.addObject("sabores", Sabor.values());
