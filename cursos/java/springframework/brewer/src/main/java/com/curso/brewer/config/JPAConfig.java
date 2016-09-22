@@ -22,6 +22,10 @@ import com.curso.brewer.repository.Cervejas;
 //Habilitar a aplicação para repositorios. Busca através da classe(criando um vinculo) o pacote basico de repositorios
 // enableDefaultTransactions=  Desabilitando as transações automaticas com o banco de dados
 @EnableJpaRepositories(basePackageClasses = Cervejas.class, enableDefaultTransactions = false)
+// Dentro do pacote "EnableJpaRepositories" existe um  atributo chamado "repositoryImplementationPostfix"
+//  Este atributo verifica onde estão a implementação de alguma método que pesquisa que você mesmo
+//  quiz customizar, o padrão é "Impl", mas você pode alterar o nome posfixo da classe, por ex. "Helper"
+
 // Com essa anotação eu mesmo vou gerenciar as transações com o Banco de dados
 @EnableTransactionManagement
 public class JPAConfig {
