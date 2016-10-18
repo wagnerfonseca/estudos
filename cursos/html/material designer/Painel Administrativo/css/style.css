@@ -40,18 +40,18 @@ footer {
 }
 @media only screen and (min-width: 601px) {
   .container {
-    width: 90%;
+    width: 98%;
   }
 }
 @media only screen and (min-width: 993px) {
   .container {
-    width: 90%;
+    width: 98%;
   }
 }
 @media only screen and (max-width: 993px) {
   #main,
-  footer {
-    padding-left: 0px;  
+  header, footer {
+    padding-left: 0;  
   }
 }
 /*---------------------------------
@@ -150,7 +150,7 @@ li.li-hover:hover{
   position: absolute;
   left: 48%;
   top: 46%;
-  background: url(../images/user-bg.jpg) no-repeat center center;  
+  background: url(../images/office.jpg) no-repeat center center;  
   z-index: 1001;
 }
 #loader:before {
@@ -312,19 +312,20 @@ li.li-hover:hover{
 /*----------------------------------------
     Page Header
 ------------------------------------------*/
-h1.logo-wrapper{
+h1.logo-wrapper {
   margin: 0px 0px;
+  line-height: 0.8;
+  margin-left: 3.5%;
 }
 h1 span.logo-text{
   display: none;
 }
+/*
 header .brand-logo {
-  margin: 5px 0px;
-  /*padding: 0 42px;
-  padding: 0px 10px 0 75px;*/
-  
+  margin: 5px 0px;  
   padding: 0 20px;
 }
+
 @media only screen and (max-width: 992px) {
   nav .nav-wrapper {
     text-align: center;
@@ -333,6 +334,14 @@ header .brand-logo {
     font-size: 36px;
   }
 }
+@media only screen and (max-width: 601px) {
+  nav .nav-wrapper {
+    text-align: center;
+  }
+  nav .nav-wrapper a.page-title {
+    font-size: 36px;
+  }  
+}*/
 li.search-out:hover{
   background: transparent;
 }
@@ -358,11 +367,16 @@ li.search-out:hover{
 }
 
 ul.side-nav.fixed {
-  top: 64px;
+  top: 64px; 
 }
 @media only screen and (max-width: 992px) {
   ul.side-nav.fixed {
-    top: 56px;
+     top: 64px;
+  }
+}
+@media only screen and (max-width: 601px) {
+  ul.side-nav.fixed {
+     top:56px;
   }
 }
 ul.side-nav.fixed hr {
@@ -380,7 +394,10 @@ ul.side-nav.fixed hr {
 #left-sidebar-nav {
   position: fixed;
   width: 100px;
-  left: 180px;
+  top: 0;
+  right: 0;
+  line-height: 58px;
+  /*left: 180px;*/
   z-index: 999;
   height: auto;
 }
@@ -442,7 +459,7 @@ ul.side-nav.fixed:hover {
   /*overflow-y:hidden;*/
 }
 ul.side-nav.fixed li.user-details {
-  background: url(../images/user-bg.jpg) no-repeat center center;
+  background: url(../images/office.jpg) no-repeat center center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
