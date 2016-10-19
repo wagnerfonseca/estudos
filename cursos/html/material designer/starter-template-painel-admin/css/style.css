@@ -28,7 +28,7 @@ header, #header, main, #main, footer, #footer {
 }
 
 #dashboard {
-  padding-top: 12px;
+  padding-top: 8px;
 }
 
 .icon-block {
@@ -57,7 +57,13 @@ nav .brand-logo a {
   display: inline-block;
   font-size: 1.5rem;  
   white-space: nowrap;
-  margin: 10px 0;  
+  margin: 0;  
   width: 100%;
   text-align: center;
+}
+
+/* HOT FIX */
+.side-nav li > a > i.material-icons {
+  height: inherit;
+  margin: 0 12px 0 0;
 }
