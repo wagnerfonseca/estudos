@@ -1,6 +1,5 @@
 package com.curso.brewer.repository.helper.cerveja;
 
-import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -8,7 +7,11 @@ import javax.persistence.PersistenceContext;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -46,12 +49,36 @@ public class CervejasImpl implements CervejasQueries {
 	// Como nos retiramos as transações automaticas, deve ser implementar com esta aontação
 	// Por ser uma transação somente para pesquisa, ela pode ser somente leitura
 	@Transactional(readOnly = true) 
-	public List<Cerveja> filtrar(CervejaFilter filter) {
+	public Page<Cerveja> filtrar(CervejaFilter filter, Pageable pageable) {
 		// manager.unwrap para retirar a Sessão do Hibernate para criar o objeto de Criteria 
 		// esta consulta vai ser para a Entidade Cerveja
 		// Outra vantagem da utilização da Criteria é a join de tabelas
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Cerveja.class);
 		
+		// Pageable um objeto que possui informações referente a pagina
+		int paginaAtual = pageable.getPageNumber();
+		int totalRegistrosPorPagina = pageable.getPageSize();
+		int primeiroRegistro = paginaAtual * totalRegistrosPorPagina;
+		
+		criteria.setFirstResult(primeiroRegistro);
+		criteria.setMaxResults(totalRegistrosPorPagina);
+		
+		adicionarFiltro(filter, criteria);
+		
+		return new PageImpl<>(criteria.list(), pageable, total(filter));
+	}
+	
+	/**
+	 * Responsavel por calcular o total de registros
+	 * */
+	private Long total(CervejaFilter filter) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Cerveja.class);
+		adicionarFiltro(filter, criteria);
+		criteria.setProjection(Projections.rowCount());
+		return (Long) criteria.uniqueResult();
+	}
+
+	private void adicionarFiltro(CervejaFilter filter, Criteria criteria) {
 		if (filter != null) {
 			if (!StringUtils.isEmpty(filter.getSku())) {
 				criteria.add(Restrictions.eq("sku", filter.getSku()));
@@ -81,8 +108,6 @@ public class CervejasImpl implements CervejasQueries {
 				criteria.add(Restrictions.le("valor", filter.getValorAte()));
 			}
 		}
-		
-		return criteria.list();
 	}
 	
 	private boolean isEstiloPresente(CervejaFilter filter) {
