@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -83,6 +85,48 @@ public class PageWrapper<T> {
 				.build(true) // decodificar
 				.encode() // encodificar
 				.toUriString();
+	}
+	
+	
+	/**
+	 * Método que vai construir um URL com as informações para ordenação da consulta
+	 * */
+	public String urlOrdenada(String propriedade) {
+		UriComponentsBuilder uriBuilderOrder = UriComponentsBuilder
+				.fromUriString(uriBuilder.build(true).encode().toUriString());		
+		
+		String valorSort = String.format("%s,%s", propriedade, inverterDirecao(propriedade));
+		
+		return uriBuilderOrder.replaceQueryParam("sort", valorSort).build(true).encode().toUriString();
+	}
+	
+	/**
+	 * Para inverter a sequencia de ordenação
+	 * No momento de montar as string de ordenação, inverto conforme o click
+	 * */
+	public String inverterDirecao(String propriedade) {
+		String direcao = "asc";
+		
+		Order order = page.getSort() != null ? page.getSort().getOrderFor(propriedade) :  null;
+		if (order != null) {
+			direcao = Sort.Direction.ASC.equals(order.getDirection()) ? "desc" : "asc";
+		}
+		
+		return direcao;
+	}
+	
+	/**
+	 * Para saber qual é o tipo de ordenação 
+	 * */
+	public boolean descendente(String propriedade) {
+		return inverterDirecao(propriedade).equals("asc");
+	}
+	
+	public boolean ordenada(String propriedade) {
+		Order order = page.getSort() != null ? page.getSort().getOrderFor(propriedade) :  null;
+		if (order == null)
+			return false;
+		return page.getSort().getOrderFor(propriedade) != null ? true : false;
 	}
 
 }

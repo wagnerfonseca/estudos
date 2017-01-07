@@ -7,11 +7,13 @@ import javax.persistence.PersistenceContext;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -62,6 +64,17 @@ public class CervejasImpl implements CervejasQueries {
 		
 		criteria.setFirstResult(primeiroRegistro);
 		criteria.setMaxResults(totalRegistrosPorPagina);
+		
+		// Realizar Ordenação dos dados
+		// Essa informação vem pelo objeto Pageable
+		Sort sort = pageable.getSort();
+		if (sort != null) {
+			// Sort.Order para não confundir com o outro pacote que tem o mesmo nome
+			Sort.Order order = sort.iterator().next(); // quais são os campos que vão ser ordenados, e como serão ordenados
+			String field = order.getProperty(); // o campo que vai ser odenado
+			
+			criteria.addOrder(order.isAscending() ? Order.asc(field) : Order.desc(field) ); 
+		}
 		
 		adicionarFiltro(filter, criteria);
 		

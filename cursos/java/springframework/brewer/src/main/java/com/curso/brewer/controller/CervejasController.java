@@ -71,7 +71,7 @@ public class CervejasController {
 	@GetMapping
 	public ModelAndView pesquisar(CervejaFilter cervejaFilter, 
 			BindingResult result,
-			@PageableDefault(size = 2) 
+			@PageableDefault(size = 4) 
 			Pageable pageable,
 			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("cerveja/PesquisaCervejas");
