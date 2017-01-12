@@ -1,12 +1,16 @@
 package com.curso.brewer.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,7 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.curso.brewer.controller.page.PageWrapper;
 import com.curso.brewer.model.Estilo;
+import com.curso.brewer.repository.Estilos;
+import com.curso.brewer.repository.filter.EstiloFilter;
 import com.curso.brewer.service.CadastroEstiloService;
 import com.curso.brewer.service.exception.NomeEstiloJaCadastradoException;
 
@@ -24,6 +31,9 @@ public class EstilosController {
 	
 	@Autowired
 	private CadastroEstiloService service;
+	
+	@Autowired
+	private Estilos estilos;
 	
 	@RequestMapping("/novo")
 	public ModelAndView novo(Estilo estilo) {
@@ -61,6 +71,19 @@ public class EstilosController {
 		estilo = service.salvar(estilo);		
 		
 		return ResponseEntity.ok(estilo); //CODIGO HTTP 200 OK
+	}
+	
+	@GetMapping
+	public ModelAndView pesquisar(EstiloFilter filter,
+			BindingResult result,
+			@PageableDefault(size = 4) 
+			Pageable pageable,
+			HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("estilo/PesquisaEstilos");
+		
+		PageWrapper<Estilo> pagina = new PageWrapper<>(estilos.filtrar(filter, pageable), request);
+		mv.addObject("pagina", pagina);
+		return mv;
 	}
 	
 
