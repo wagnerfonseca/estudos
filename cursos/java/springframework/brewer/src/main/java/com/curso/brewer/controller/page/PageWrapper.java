@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /** 
@@ -33,9 +32,17 @@ public class PageWrapper<T> {
 	 * Quando for criar um objeto de PageWrapper tem que passar o objeto page */
 	public PageWrapper(Page<T> page, HttpServletRequest request) {
 		this.page = page;
+		// Necessário substituir alguns caracteres que ainda não são montados na URI como o caracter "+"
+		String httpUrl = request.getRequestURL().append(
+				request.getQueryString() != null ? "?" + request.getQueryString() : "")
+				.toString()
+				.replaceAll("\\+", "%20");
+		// Agora vou construir a minha URI apartir da minha string
+		this.uriBuilder = UriComponentsBuilder.fromHttpUrl(httpUrl);
+		
 		// Para construir esse meu URI, eu vou cosntruir esse URI através do HttpServletRequest, 
 		// que possui as informações de requisições do client
-		this.uriBuilder = ServletUriComponentsBuilder.fromRequest(request);
+		//this.uriBuilder = ServletUriComponentsBuilder.fromRequest(request);
 	}
 	
 	/**
