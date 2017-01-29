@@ -7,18 +7,18 @@ import javax.persistence.PersistenceContext;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.curso.brewer.model.Cerveja;
 import com.curso.brewer.repository.filter.CervejaFilter;
+import com.curso.brewer.repository.paginacao.PaginacaoUtil;
 
 /*
  Esta classe vai implementar um método para uma consulta customizada.
@@ -45,6 +45,9 @@ public class CervejasImpl implements CervejasQueries {
 	 * */
 	@PersistenceContext
 	private EntityManager manager;
+	
+	@Autowired
+	private PaginacaoUtil PaginacaoUtil; 
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -56,26 +59,8 @@ public class CervejasImpl implements CervejasQueries {
 		// esta consulta vai ser para a Entidade Cerveja
 		// Outra vantagem da utilização da Criteria é a join de tabelas
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Cerveja.class);
-		
-		// Pageable um objeto que possui informações referente a pagina
-		int paginaAtual = pageable.getPageNumber();
-		int totalRegistrosPorPagina = pageable.getPageSize();
-		int primeiroRegistro = paginaAtual * totalRegistrosPorPagina;
-		
-		criteria.setFirstResult(primeiroRegistro);
-		criteria.setMaxResults(totalRegistrosPorPagina);
-		
-		// Realizar Ordenação dos dados
-		// Essa informação vem pelo objeto Pageable
-		Sort sort = pageable.getSort();
-		if (sort != null) {
-			// Sort.Order para não confundir com o outro pacote que tem o mesmo nome
-			Sort.Order order = sort.iterator().next(); // quais são os campos que vão ser ordenados, e como serão ordenados
-			String field = order.getProperty(); // o campo que vai ser odenado
-			
-			criteria.addOrder(order.isAscending() ? Order.asc(field) : Order.desc(field) ); 
-		}
-		
+				
+		PaginacaoUtil.preparar(criteria, pageable);
 		adicionarFiltro(filter, criteria);
 		
 		return new PageImpl<>(criteria.list(), pageable, total(filter));

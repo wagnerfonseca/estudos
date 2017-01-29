@@ -5,23 +5,26 @@ import javax.persistence.PersistenceContext;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.curso.brewer.model.Estilo;
 
 import com.curso.brewer.repository.filter.EstiloFilter;
+import com.curso.brewer.repository.paginacao.PaginacaoUtil;
 
 public class EstilosImpl implements EstilosQueries {
 	
 	@PersistenceContext
 	private EntityManager manager;
+	
+	@Autowired
+	private PaginacaoUtil paginacaoUtil;
 
 	@SuppressWarnings("unchecked")	
 	@Override
@@ -29,21 +32,7 @@ public class EstilosImpl implements EstilosQueries {
 	public Page<Estilo> filtrar(EstiloFilter filter, Pageable pageable) {	
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Estilo.class);
 		
-		int paginaAtual = pageable.getPageNumber();
-		int totalRegistrosPorPagina = pageable.getPageSize();
-		int primeiroRegistro = paginaAtual * totalRegistrosPorPagina;
-		
-		criteria.setFirstResult(primeiroRegistro);
-		criteria.setMaxResults(totalRegistrosPorPagina);
-		
-		Sort sort = pageable.getSort();
-		if (sort != null) {
-			Sort.Order order = sort.iterator().next();
-			String field = order.getProperty();
-			
-			criteria.addOrder(order.isAscending() ? Order.asc(field) : Order.desc(field) ); 
-		}
-		
+		paginacaoUtil.preparar(criteria, pageable);		
 		adicionarFiltro(filter, criteria);
 		
 		return new PageImpl<>(criteria.list(), pageable, totalPaginas(filter));

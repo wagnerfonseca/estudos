@@ -4,6 +4,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
@@ -19,8 +20,11 @@ import com.curso.brewer.model.Cerveja;
 import com.curso.brewer.repository.Cervejas;
 
 @Configuration
-//Habilitar a aplicação para repositorios. Busca através da classe(criando um vinculo) o pacote basico de repositorios
-// enableDefaultTransactions=  Desabilitando as transações automaticas com o banco de dados
+// Para habilitar a injeção de Beans diversos, utilizar o component scan
+@ComponentScan(basePackageClasses = Cervejas.class) // Utilizar uma classe como  guia. Através dessa classe serão lidas todos os pacotes internos buscando por classe que estão anotadas com @Component
+//Habilitar a aplicação para injetar beans de repositorios. Apenas as interfaces deste pacote que extendem da Interface Repository  e derivados  
+//Busca através da classe(criando um vinculo) o pacote basico de repositorios
+// *** enableDefaultTransactions =  Desabilitando as transações automaticas com o banco de dados
 @EnableJpaRepositories(basePackageClasses = Cervejas.class, enableDefaultTransactions = false)
 // Dentro do pacote "EnableJpaRepositories" existe um  atributo chamado "repositoryImplementationPostfix"
 //  Este atributo verifica onde estão a implementação de alguma método que pesquisa que você mesmo
