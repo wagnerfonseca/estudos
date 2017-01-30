@@ -133,7 +133,6 @@
 			<scope>compile</scope>
 		</dependency>
 
-
 		<!-- Thymeleaf - Layout Dialect -->
 		<dependency>
 			<groupId>nz.net.ultraq.thymeleaf</groupId>
@@ -215,7 +214,8 @@
 
 	</dependencies>
 
-	<repositories>
+	<!--  Não há necessidade de utilizar o repositorio de versões SNAPSHOT -->
+	<!-- <repositories>
 		<repository>
 			<id>sonatype-nexus-snapshots</id>
 			<name>Sonatype Nexus Snapshots</name>
@@ -224,7 +224,7 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
-	</repositories>
+	</repositories> -->
 
 
 
