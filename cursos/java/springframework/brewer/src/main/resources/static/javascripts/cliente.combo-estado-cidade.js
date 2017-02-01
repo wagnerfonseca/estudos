@@ -30,16 +30,24 @@ Brewer.ComboCidade = (function(){
 		this.comboEstado = comboEstado;
 		this.combo = $("#cidade");
 		this.imgLoading = $('.js-img-loading');
+		this.inputHiddenCidadeSelecionada = $('#inputHiddenCidadeSelecionada');
 	}
 	
 	ComboCidade.prototype.iniciar = function() {
 		reset.call(this);
 		// agora eu posso acessar o atributo "on" do objeto comboEstado e "ouvir" o evento lançado 
 		this.comboEstado.on('alterado', onEstadoAlterado.bind(this));
+		var codigoEstado = this.comboEstado.combo.val();	
+		inicializarCidades.call(this, codigoEstado); 
 	}
 	
 	// Consigo capturar o valor do "id" da tabela estado dentro de um novo objeto
 	function onEstadoAlterado(evento, codigoEstado) { //codigoEstado é o meu "id" da tabela estado
+		this.inputHiddenCidadeSelecionada.val('');
+		inicializarCidades.call(this, codigoEstado); 
+	}
+	
+	function inicializarCidades(codigoEstado) {
 		if (codigoEstado) {
 			var resposta = $.ajax({
 				url: this.combo.data('url'),
@@ -60,11 +68,16 @@ Brewer.ComboCidade = (function(){
 		var options = [];
 		cidades.forEach(function(cidade) {
 			//insiro dentro de um array
-			options.push('<option value"' + cidade.codigo + '">' + cidade.nome + '</option>');
+			options.push('<option value="' + cidade.codigo + '">' + cidade.nome + '</option>');
 		});
 		// jogo o array  fanzendo um join o valor defaul é ","
 		this.combo.html(options.join(''));
 		this.combo.removeAttr('disabled');
+		
+		var codigoCidadeSelecionada = this.inputHiddenCidadeSelecionada.val();
+		if (codigoCidadeSelecionada)
+			this.combo.val(codigoCidadeSelecionada);
+			
 	}
 	
 	// zerar o combo de cidade
