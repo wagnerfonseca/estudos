@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="cidade")
 public class Cidade implements Serializable {
@@ -23,6 +25,7 @@ public class Cidade implements Serializable {
 	
 	@ManyToOne // coloca na forma em que se lê (uma cidade tem "many" estados, um estado tem "one" cidade)
 	@JoinColumn(name = "codigo_estado") // Nome do campo (na tabela cidade) utilizado para fazer FK com tabela Estado
+	@JsonIgnore // ignorar no momento de montar o objeto JSON
 	private Estado estado;
 		
 	public Long getCodigo() {
