@@ -3,6 +3,7 @@ package com.curso.brewer.model;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +24,8 @@ public class Cidade implements Serializable {
 	private Long codigo;
 	private String nome;
 	
-	@ManyToOne // coloca na forma em que se lê (uma cidade tem "many" estados, um estado tem "one" cidade)
+	//fetch = FetchType.LAZY -> não precisa inicializar estado
+	@ManyToOne(fetch = FetchType.LAZY) // coloca na forma em que se lê (uma cidade tem "many" estados, um estado tem "one" cidade)
 	@JoinColumn(name = "codigo_estado") // Nome do campo (na tabela cidade) utilizado para fazer FK com tabela Estado
 	@JsonIgnore // ignorar no momento de montar o objeto JSON
 	private Estado estado;
