@@ -14,6 +14,7 @@ import com.curso.brewer.model.Cliente;
 import com.curso.brewer.model.TipoPessoa;
 import com.curso.brewer.repository.Estados;
 import com.curso.brewer.service.CadastroClienteService;
+import com.curso.brewer.service.exception.CpfCnpjClienteCadastradoException;
 
 @Controller
 @RequestMapping("/clientes")
@@ -39,7 +40,15 @@ public class ClientesController {
 			return novo(cliente);
 		}
 		
-		cadastroClienteService.salvar(cliente);
+		try {
+			cadastroClienteService.salvar(cliente);
+		} catch(CpfCnpjClienteCadastradoException e) {
+			// Enviando uma mensagem de erro para a camada de "view"
+			// Utilizar quando você faz uma verificação e deseja enviar a mensagem de erro de uma exceção para a "View" 
+			result.rejectValue("cpfOuCnpj", e.getMessage(), e.getMessage());
+			return novo(cliente);
+		}
+		
 		
 		attr.addAttribute("mensagem", "Cliente salvo com sucesso");		
 		
