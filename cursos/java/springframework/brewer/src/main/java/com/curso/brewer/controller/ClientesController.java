@@ -60,7 +60,7 @@ public class ClientesController {
 		}
 		
 		
-		attr.addAttribute("mensagem", "Cliente salvo com sucesso");		
+		attr.addFlashAttribute("mensagem", "Cliente salvo com sucesso");		
 		
 		return new ModelAndView("redirect:/clientes/novo");
 	}

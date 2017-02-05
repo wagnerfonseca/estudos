@@ -74,5 +74,13 @@ public class Endereco implements Serializable {
 	public void setCidade(Cidade cidade) {
 		this.cidade = cidade;
 	}
+	
+	/*Em vez de ficar criando regras e condições, a instrução vem para o POJO */
+	public String getNomeCidadeSiglaEstado() {
+		if (this.cidade != null) {
+			return this.cidade.getNome() + "/" + this.cidade.getEstado().getSigla();
+		}
+		return null;
+	}
 
 }

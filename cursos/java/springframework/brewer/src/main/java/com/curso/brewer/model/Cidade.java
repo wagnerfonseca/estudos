@@ -24,7 +24,11 @@ public class Cidade implements Serializable {
 	private Long codigo;
 	private String nome;
 	
-	//fetch = FetchType.LAZY -> não precisa inicializar estado
+	/*fetch = FetchType.LAZY -> não precisa inicializar estado
+	 * Mas em determinado momento na aplicação, sera necessário trazer uma consulta com o obejto inicializados 
+	 * todos o obejtos que estão relacionados com Cidade.
+	 * Para resolver esse problema, crie uma consulta criteria e crie um alias para o realcionamento
+	 * */	 
 	@ManyToOne(fetch = FetchType.LAZY) // coloca na forma em que se lê (uma cidade tem "many" estados, um estado tem "one" cidade)
 	@JoinColumn(name = "codigo_estado") // Nome do campo (na tabela cidade) utilizado para fazer FK com tabela Estado
 	@JsonIgnore // ignorar no momento de montar o objeto JSON
