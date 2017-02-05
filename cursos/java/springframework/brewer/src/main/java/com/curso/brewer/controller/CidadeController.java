@@ -2,15 +2,24 @@ package com.curso.brewer.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.curso.brewer.model.Cidade;
 import com.curso.brewer.repository.Cidades;
+import com.curso.brewer.repository.Estados;
+import com.curso.brewer.service.CadastroCidadesService;
+import com.curso.brewer.service.exception.NomeCidadeJaCadastradaException;
 
 @Controller
 @RequestMapping("/cidades")
@@ -19,9 +28,34 @@ public class CidadeController {
 	@Autowired
 	private Cidades cidades;
 	
+	@Autowired
+	private Estados estados;
+	
+	@Autowired
+	private CadastroCidadesService service;
+	
 	@RequestMapping("/novo")
-	public String  novo() {
-		return "cidade/CadastroCidade";
+	public ModelAndView novo(Cidade cidade) {
+		ModelAndView mv = new ModelAndView("cidade/CadastroCidade"); // escrever o caminho da página que você deseja renderizar
+		mv.addObject("estados", estados.findAll());
+		return mv;
+	}
+	
+	@PostMapping("/novo")
+	public ModelAndView salvar(@Valid Cidade cidade, BindingResult result, RedirectAttributes attr) {
+		if (result.hasErrors()) {
+			return novo(cidade);
+		}		
+		
+		try {
+			service.salvar(cidade);
+		} catch(NomeCidadeJaCadastradaException e) {
+			result.rejectValue("nome", e.getMessage(), e.getMessage());
+			return novo(cidade);
+		}
+		
+		attr.addFlashAttribute("mensagem", "Cidade cadastrada com sucesso!");
+		return new ModelAndView("redirect:/cidades/novo"); //apos o sinal de ":" mapear o caminho do método
 	}
 
 	// Este método vai obedecer as recomendações RESTful
