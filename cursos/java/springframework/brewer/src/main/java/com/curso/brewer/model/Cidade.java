@@ -33,6 +33,10 @@ public class Cidade implements Serializable {
 	@JoinColumn(name = "codigo_estado") // Nome do campo (na tabela cidade) utilizado para fazer FK com tabela Estado
 	@JsonIgnore // ignorar no momento de montar o objeto JSON
 	private Estado estado;
+	
+	public Boolean temEstado() {
+		return this.estado != null;
+	}
 		
 	public Long getCodigo() {
 		return codigo;

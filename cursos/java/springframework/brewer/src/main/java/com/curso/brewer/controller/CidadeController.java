@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -49,6 +50,11 @@ public class CidadeController {
 	}
 	
 	@PostMapping("/novo")
+	// Para recompilar o cache quando houver uma atulização nos dados que foram configurados para ficar em cache
+	// value = Local onde se encontra o seu cache.
+	// allEntries = true -> Refazer todo o cache 
+	// condition -> condição para executar o @CacheEvict
+	@CacheEvict(value = "cidades", key = "#cidade.estado.codigo", condition = "#cidade.temEstado()")
 	public ModelAndView salvar(@Valid Cidade cidade, BindingResult result, RedirectAttributes attr) {
 		if (result.hasErrors()) {
 			return novo(cidade);
@@ -65,11 +71,17 @@ public class CidadeController {
 		return new ModelAndView("redirect:/cidades/novo"); //apos o sinal de ":" mapear o caminho do método
 	}
 
+	// CACHE
+	//-----------
 	//Para as consultas onde os valores dificilmente são modificados
 	// "cidade" é o nome da região onde este cache vai ficar
 	// Se os parametros passados para o parametro ja estão no cache, este método não é executado	
-	@Cacheable("cidades")
+	// key -> o valor que será usado como chave, essa chave é implementada para auxiliar qual a parte do cache deve ser atulizado 
+	// Sempre com "#" e usando o mesmo nome do parametro que vai ser usado como chave
+	@Cacheable(value = "cidades", key = "#codigoEstado")
 	
+	// RESTFul
+	//-----------
 	// Este método vai obedecer as recomendações RESTful 
 	// consumes = MediaType.APPLICATION_JSON_VALUE -> Para o consumo (request) requisição em formato JSON  
 	// @RequestParam(name = "estado", defaultValue = "-1") -> para passar brewer/cidades?estado=6
