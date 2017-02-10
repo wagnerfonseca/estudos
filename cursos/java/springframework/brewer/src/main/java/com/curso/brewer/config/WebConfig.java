@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 import org.springframework.beans.BeansException;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -46,8 +49,10 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 @ComponentScan(basePackages = {"com.curso.brewer.controller"})
 /* Habilitar este projeto para desenvolvimento WEB */
 @EnableWebMvc
-/* Habilita o Spring para Paginação e ordenação */
+/* Habilitar o Spring para Paginação e ordenação */
 @EnableSpringDataWebSupport
+/* Habilitar cache em memória de retorno de determinados métodos */
+@EnableCaching
 public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
@@ -130,4 +135,15 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		// Força o Spring a sempre interpretar todas as entradas de dados com o Padrão pt-BR
 		return new FixedLocaleResolver(new Locale("pt", "BR"));
 	}
+	
+	/* Bean responsavel pelo cachemanento de dados */
+	@Bean
+	public CacheManager cacheManager() {
+		/* retornar um objeto responsavel pelo cacheamento 
+		 -> ConcurrentMapCacheManager() um Map de cache [NÂO é RECOMENDADO PARA PRODUCAO]
+		 * */
+		return new ConcurrentMapCacheManager(); 
+	}
+	
+	
 }

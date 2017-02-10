@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
@@ -64,6 +65,11 @@ public class CidadeController {
 		return new ModelAndView("redirect:/cidades/novo"); //apos o sinal de ":" mapear o caminho do método
 	}
 
+	//Para as consultas onde os valores dificilmente são modificados
+	// "cidade" é o nome da região onde este cache vai ficar
+	// Se os parametros passados para o parametro ja estão no cache, este método não é executado	
+	@Cacheable("cidades")
+	
 	// Este método vai obedecer as recomendações RESTful 
 	// consumes = MediaType.APPLICATION_JSON_VALUE -> Para o consumo (request) requisição em formato JSON  
 	// @RequestParam(name = "estado", defaultValue = "-1") -> para passar brewer/cidades?estado=6
@@ -72,7 +78,11 @@ public class CidadeController {
 	public @ResponseBody List<Cidade> pesquisaPorCodigoEstado(
 			@RequestParam(name = "estado", defaultValue = "-1")
 			Long codigoEstado) {
-		
+		try {
+			Thread.sleep(1500);
+		} catch (InterruptedException e) {		
+			e.printStackTrace();
+		}
 		return cidades.findByEstadoCodigo(codigoEstado);
 	}
 	
@@ -80,7 +90,7 @@ public class CidadeController {
 	public ModelAndView pesquisar(CidadeFilter filter, BindingResult result
 			, @PageableDefault(size = 20) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("cidade/PesquisaCidades");
-
+		
 		mv.addObject("estados", estados.findAll());
 		
 		PageWrapper<Cidade> paginaWrapper = new PageWrapper<>(cidades.filtrar(filter, pageable)
