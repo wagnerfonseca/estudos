@@ -140,8 +140,11 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 	@Bean
 	public CacheManager cacheManager() {
 		/* retornar um objeto responsavel pelo cacheamento 
-		 -> ConcurrentMapCacheManager() um Map de cache [NÂO é RECOMENDADO PARA PRODUCAO]
+		 -> ConcurrentMapCacheManager() um Map de cache [NãO é RECOMENDADO PARA PRODUCAO]
 		 * */
+		
+		// Usando Guava
+	
 		return new ConcurrentMapCacheManager(); 
 	}
 	
