@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,6 +25,7 @@ public class Cidade implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
+	@NotBlank(message = "Nome é obrigatório")
 	private String nome;
 	
 	/*fetch = FetchType.LAZY -> não precisa inicializar estado
@@ -29,6 +33,7 @@ public class Cidade implements Serializable {
 	 * todos o obejtos que estão relacionados com Cidade.
 	 * Para resolver esse problema, crie uma consulta criteria e crie um alias para o realcionamento
 	 * */	 
+	@NotNull(message = "Estado é obrigatório")
 	@ManyToOne(fetch = FetchType.LAZY) // coloca na forma em que se lê (uma cidade tem "many" estados, um estado tem "one" cidade)
 	@JoinColumn(name = "codigo_estado") // Nome do campo (na tabela cidade) utilizado para fazer FK com tabela Estado
 	@JsonIgnore // ignorar no momento de montar o objeto JSON

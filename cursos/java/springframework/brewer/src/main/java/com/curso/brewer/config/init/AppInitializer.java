@@ -1,7 +1,11 @@
 package com.curso.brewer.config.init;
 
+import javax.servlet.Filter;
+
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration.Dynamic;
+
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -51,4 +55,19 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		 * */
 		registration.setMultipartConfig(new MultipartConfigElement(""));
 	}
+	
+	
+	/*
+	 * Para resolver problemas de Acentuação SEM as CONFIGURAÇÕES de SEGURANÇA
+	 * 
+	 * */
+	@Override
+	protected Filter[] getServletFilters() {
+		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+		characterEncodingFilter.setEncoding("UTF-8");
+		characterEncodingFilter.setForceEncoding(true);
+		
+		return new Filter[] { characterEncodingFilter };
+	}
+	
 }
