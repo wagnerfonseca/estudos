@@ -54,7 +54,7 @@ public class CidadeController {
 	// value = Local onde se encontra o seu cache.
 	// allEntries = true -> Refazer todo o cache 
 	// condition -> condição para executar o @CacheEvict
-	@CacheEvict(value = "cidades", key = "#cidade.estado.codigo", condition = "cidade.temEstado()")
+	@CacheEvict(value = "cidades", key = "#cidade.estado.codigo", condition = "#cidade.temEstado()")
 	public ModelAndView salvar(@Valid Cidade cidade, BindingResult result, RedirectAttributes attr) {
 		if (result.hasErrors()) {
 			return novo(cidade);

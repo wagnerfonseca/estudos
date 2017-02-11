@@ -39,7 +39,7 @@ public class Cidade implements Serializable {
 	@JsonIgnore // ignorar no momento de montar o objeto JSON
 	private Estado estado;
 	
-	public Boolean temEstado() {
+	public boolean temEstado() {
 		return this.estado != null;
 	}
 		
