@@ -60,7 +60,8 @@
 					<label class="control-label">Status</label>
 					<div>
 						<input type="checkbox" class="js-status" data-size="small" data-off-color="danger" 
-							data-on-text="Ativo" data-off-text="Inativo"/>
+							data-on-text="Ativo" data-off-text="Inativo" 
+							th:field="*{ativo}"/>
 					</div>
 				</div>
 				
@@ -68,16 +69,17 @@
 			
 			<div class="row">
 				<div class="form-group  col-sm-6  bw-required" brewer:classforerror="grupos">
-					<label class="control-label">Grupos</label> 
+					<label class="control-label">Grupos</label>
 					<div>
-  						<div class="checkbox  checkbox-inline"> 
-	    					<input type="checkbox" />
-	    					<label>Administrador</label>
-    					</div>
-    					<div class="checkbox  checkbox-inline"> 
-	    					<input type="checkbox" />
-	    					<label>Vendedor</label>
-    					</div>
+						<th:block th:each="grupo : ${grupos}">
+							<div class="checkbox  checkbox-inline"> 
+		    					<input type="checkbox" th:value="${grupo.codigo}" th:field="*{grupos}" />
+		    					<!-- #ids.prev('grupos') : para buscar o id do objeto grupos -->
+		    					<label th:for="${#ids.prev('grupos')}" th:text="${grupo.nome}">Administrador</label>
+		    					<!-- O thymeleaf adicona um input hidden para evitar problemas com determinados navegadores  -->
+		    					<!-- e isso causa um problema no funcionamento do checkbox -->		    					
+	    					</div>
+						</th:block>
 					</div>
 				</div>
 			</div>

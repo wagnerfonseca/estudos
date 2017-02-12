@@ -146,3 +146,16 @@
 	width: 140px;
 	text-align: right;
 }
+
+/*
+###################
+# CUSTOMIZACAO DE COMPONENTES
+# -----------------
+# Para resolver os problemas referente a componetes de terceiros
+# "+ input" -> para voltar a funcionar o click do checkbox
+###################
+*/
+.checkbox input[type="checkbox"]:checked + input + label::after {
+    font-family: 'FontAwesome';
+    content: "\f00c"; 
+}

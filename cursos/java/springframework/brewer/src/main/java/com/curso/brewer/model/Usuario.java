@@ -14,6 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -43,10 +44,10 @@ public class Usuario implements Serializable {
 	private LocalDate dataNascimento;
 	private String senha;
 	@Transient
-	private String confirmacaoSenha;
+	private String confirmacaoSenha;	
 	private Boolean ativo;
 	
-	//@NotNull(message = "Selecione ao menos um grupo")
+	@Size(min = 1, message = "Selecione ao menos um grupo")
 	@ManyToMany // Seguindo sempre na ordem que se lê Um "Usuario" tem "MUITOS" Grupos e um "Grupo" pode ter "MUITOS" usuários
 	// Como existe uma tabela para fazer INTERSEÇÃO entre os GRUPO e USUARIO Usa a anotação @JoinTable
 	@JoinTable(

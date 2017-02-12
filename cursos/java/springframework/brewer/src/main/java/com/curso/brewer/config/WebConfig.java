@@ -37,6 +37,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 import com.curso.brewer.controller.converter.CidadeConverter;
 import com.curso.brewer.controller.converter.EstadoConverter;
 import com.curso.brewer.controller.converter.EstilosConverter;
+import com.curso.brewer.controller.converter.GrupoConverter;
 import com.curso.brewer.thymeleaf.BrewerDialect;
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import com.google.common.cache.CacheBuilder;
@@ -123,6 +124,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		conversionService.addConverter(new EstilosConverter());
 		conversionService.addConverter(new CidadeConverter());
 		conversionService.addConverter(new EstadoConverter());
+		conversionService.addConverter(new GrupoConverter());
 		
 		
 		//Converter  BigDecimal
