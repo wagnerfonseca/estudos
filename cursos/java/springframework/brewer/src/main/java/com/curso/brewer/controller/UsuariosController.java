@@ -14,6 +14,7 @@ import com.curso.brewer.model.Usuario;
 import com.curso.brewer.repository.Grupos;
 import com.curso.brewer.service.CadastroUsuariosService;
 import com.curso.brewer.service.exception.EmailUsuarioJaCadastradoException;
+import com.curso.brewer.service.exception.SenhaObrigatoriaUsuarioException;
 
 @Controller
 @RequestMapping("/usuarios")
@@ -42,7 +43,11 @@ public class UsuariosController {
 		} catch (EmailUsuarioJaCadastradoException e) {
 			result.rejectValue("email", e.getMessage(), e.getMessage());
 			return novo(usuario);
+		}  catch (SenhaObrigatoriaUsuarioException e) {
+			result.rejectValue("senha", e.getMessage(), e.getMessage());
+			return novo(usuario);
 		}
+		
 		return new ModelAndView("redirect:/usuarios/novo"); 
 	}
 

@@ -57,6 +57,10 @@ public class Usuario implements Serializable {
 	)
 	private List<Grupo> grupos;	
 	
+	public boolean isNovo() {
+		return codigo == null;
+	}
+	
 	public Long getCodigo() {
 		return codigo;
 	}
