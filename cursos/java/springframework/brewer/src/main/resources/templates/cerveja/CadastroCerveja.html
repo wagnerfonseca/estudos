@@ -34,6 +34,7 @@
 	</div>
 
 	<div class="container-fluid">	
+		<!-- Quando você nao acrescenta th:action ele NAO cria o input hidden com o codigo csrf -->
 		
 		<form method="POST" th:object="${cerveja}" class="form-vertical  js-form-loading">
 			<brewer:message/>
