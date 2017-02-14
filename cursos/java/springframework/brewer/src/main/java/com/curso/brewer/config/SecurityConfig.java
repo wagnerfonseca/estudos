@@ -1,28 +1,41 @@
 package com.curso.brewer.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.curso.brewer.security.AppUserDetailsService;
 
 /*
  * WebSecurityConfigurerAdapter proporciona alguns métodos para serem sobrescritos com relação a segurança 
  * */
 
 @EnableWebSecurity // Ja tem a anotacao @Configuration
+@ComponentScan(basePackageClasses = AppUserDetailsService.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		/* O sistema fica responsavel por buscar as informações de autenticação
+		 * mas é o spring security que fica responsavel por verificar a senha */
 		auth
-			.inMemoryAuthentication()
+			.userDetailsService(userDetailsService)
+			.passwordEncoder(passwordEncoder());
+			/*.inMemoryAuthentication()
 				.withUser("admin")
 				.password("123456")
-				.roles("CADASTRO_CLIENTE");		
+				.roles("CADASTRO_CLIENTE");		*/
 	}
 	
 	@Override
