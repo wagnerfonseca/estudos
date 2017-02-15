@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			/*.inMemoryAuthentication()
 				.withUser("admin")
 				.password("123456")
-				.roles("CADASTRO_CLIENTE");		*/
+				.roles("CADASTRO_CLIENTE");	*/
 	}
 	
 	@Override
@@ -43,15 +43,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		web
 			.ignoring()
 				.antMatchers("/layout/**") 
-				.antMatchers("/images/**"); // essas configurações tambpem podem ficar no objeto  "HttpSecurity"
+				.antMatchers("/images/**"); // essas configurações tambem podem ficar no objeto  "HttpSecurity"
 	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// a ordem das declarações influencia
 		http
-			.authorizeRequests()				
-				.anyRequest().authenticated()
+			.authorizeRequests()			
+				.antMatchers("/cidades/novo").hasRole("CADASTRAR_CIDADE")
+				// (/**) expressao ANT
+				.antMatchers("/usuarios/**").hasRole("CADASTRAR_USUARIO")
+				.anyRequest().authenticated() // qualquer requisicao deve estar autenticado				
 				.and()
 			.formLogin()
 				.loginPage("/login")
