@@ -60,6 +60,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.loginPage("/login")
 				.permitAll() // para evitar erro de ERR_TOO_MANY_REDIRECTS um looping infinito para acessar a tela de login, permitAll não precisa estar autenticado 
 				.and()
+			// Informar qual a Pagina de Erro	
+			.exceptionHandling()
+				.accessDeniedPage("/403") // Acesso negado
+				.and()
 			.csrf().disable(); 
 	}
 	
