@@ -5,8 +5,6 @@ import javax.servlet.Filter;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration.Dynamic;
 
-import org.springframework.web.filter.CharacterEncodingFilter;
-
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.curso.brewer.config.JPAConfig;
@@ -57,18 +55,18 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		registration.setMultipartConfig(new MultipartConfigElement(""));
 	}
 	
-	
-	/*
-	 * Para resolver problemas de Acentuação SEM as CONFIGURAÇÕES de SEGURANÇA
-	 * 
-	 * */
 	@Override
 	protected Filter[] getServletFilters() {
-		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-		characterEncodingFilter.setEncoding("UTF-8");
-		characterEncodingFilter.setForceEncoding(true);
+		/*
+		 * Para resolver problemas de Acentuação SEM as CONFIGURAÇÕES de SEGURANÇA
+		 * Uma vez que implementado as conficurações de segurança, esse filtro para de funcionar
+		 * E deve ser migrado para a inicialização de seguranças
+			CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+			characterEncodingFilter.setEncoding("UTF-8");
+			characterEncodingFilter.setForceEncoding(true);	
+		*/
 		
-		return new Filter[] { characterEncodingFilter };
+		return new Filter[] {  };
 	}
 	
 }
