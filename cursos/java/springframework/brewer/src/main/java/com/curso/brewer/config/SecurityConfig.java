@@ -67,7 +67,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 			// Informar qual a Pagina de Erro	
 			.exceptionHandling()
-				.accessDeniedPage("/403"); // Acesso negado 
+				.accessDeniedPage("/403") // Acesso negado
+				.and()
+			// Configurações referente a sessao
+			/*.sessionManagement()
+				.maximumSessions(1)
+				.expiredUrl("/login") //paginda para redirecionar*/
+			;
 	}
 	
 	
