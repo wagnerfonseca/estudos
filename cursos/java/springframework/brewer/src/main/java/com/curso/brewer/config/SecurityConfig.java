@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.curso.brewer.security.AppUserDetailsService;
 
@@ -60,11 +61,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.loginPage("/login")
 				.permitAll() // para evitar erro de ERR_TOO_MANY_REDIRECTS um looping infinito para acessar a tela de login, permitAll não precisa estar autenticado 
 				.and()
+			.logout()
+			// Página ncessária para funcionar o Logout depois que habilita o "CSRF"
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.and()
 			// Informar qual a Pagina de Erro	
 			.exceptionHandling()
-				.accessDeniedPage("/403") // Acesso negado
-				.and()
-			.csrf().disable(); 
+				.accessDeniedPage("/403"); // Acesso negado 
 	}
 	
 	

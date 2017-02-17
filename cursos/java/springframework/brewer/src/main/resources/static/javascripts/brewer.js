@@ -71,6 +71,30 @@ Brewer.MaskDate = (function(){
 	return MaskDate;
 }());
 
+/*
+ * O CSRF é necessário em todas as requisições diferente de GET, ou seja para POST, PUT e DELETE 
+ * Para não ser necessário ficar repetindo o codigo referente ao Token do CSRF para os envio de dados via o comando $.ajax
+ * */
+Brewer.Security = (function(){
+	
+	function Security() {
+		this.token = $('input[name=_csrf]').val();
+		this.header = $('input[name=_csrf_header]').val();
+	}
+	
+	Security.prototype.enable = function () {
+		// todas as vezes que for enviar uma requisição ajax
+		$(document).ajaxSend(function(event, jqxhr, settings) {
+			jqxhr.setRequestHeader(this.header, this.token);
+		}.bind(this));
+	}	
+	
+	
+	return Security;
+	
+}());
+
+
 $(function() {
 	var maskMoney = new Brewer.MaskMoney();
 	maskMoney.enable();
@@ -83,4 +107,7 @@ $(function() {
 	
 	var  maskDate = new Brewer.MaskDate();
 	maskDate.enable();
+	
+	var security =  new Brewer.Security();
+	security.enable();
 });

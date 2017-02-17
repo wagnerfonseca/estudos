@@ -21,7 +21,10 @@ Brewer.UploadFoto = (function() {
 				action: this.urlFotos,
 				// 'this' eu passo como parametro para para fazer um vinculo com o contexto do objeto que esta em execução.
 				// e assim também ter acesso a todas as propriedades deste objeto
-				complete: onUploadCompleto.bind(this) 
+				complete: onUploadCompleto.bind(this),
+				
+				//Ante de enviar a requisicao - enviar os dados de token od CSRF
+				beforeSend: addCsrfToken
 		}
 		
 		UIkit.uploadSelect($('#upload-select'), settings);
@@ -56,6 +59,13 @@ Brewer.UploadFoto = (function() {
 		this.inputNomeFoto.val('');
 		this.inputContentType.val('');
 	}	
+	
+	function addCsrfToken(xhr) {
+		var token = $('input[name=_csrf]').val();
+		var header = $('input[name=_csrf_header]').val();
+		
+		xhr.setRequestHeader(header, token);
+	}
 	
 	return UploadFoto;
 	
