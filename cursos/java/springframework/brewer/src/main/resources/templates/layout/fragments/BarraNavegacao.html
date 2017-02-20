@@ -20,6 +20,13 @@
 			</div>
 
 			<ul class="nav navbar-nav  navbar-right">
+				<!-- Para pegar o nome do usuário loado e resgatar o nome do usuário que esta em nosso BD  -->
+				<!-- O pacote Thymeleaf extra Spring security adiciona o facilitador #authentication -->
+				<!-- o objeto principal carrega o objeto usuario do tipo org.springframework.security.core.userdetails.User  -->
+				<li>
+		    		<p class="navbar-text" th:text="${#authentication.principal.usuario.nome}">Usuário</p>
+		    	</li>
+			
 				<li>
 					<a th:href="@{/logout}"><em class="fa  fa-sign-out"></em></a>
 				</li>

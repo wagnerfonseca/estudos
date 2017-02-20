@@ -5,7 +5,7 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,8 +27,11 @@ public class AppUserDetailsService implements UserDetailsService {
 		Usuario usuario = opt.orElseThrow(() -> new UsernameNotFoundException("Usuário e/ou senha incorretos"));
 		
 		
-		// new HashSet<>() <- ainda não esta enviando nehuma permissão do usuário
-		return new User(usuario.getEmail(), usuario.getSenha(), getPermissoes(usuario));
+		// new HashSet<>() <- ainda não esta enviando nehuma permissão do usuário	
+		//return new User(usuario.getEmail(), usuario.getSenha(), getPermissoes(usuario));
+		
+		// Vou usar herança para mostrar o nome do usuario em nosso BD para visualização
+		return new UsuarioSistema(usuario, getPermissoes(usuario));
 	}
 
 	private Collection<? extends GrantedAuthority> getPermissoes(Usuario usuario) {
