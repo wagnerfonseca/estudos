@@ -49,6 +49,9 @@ public class CidadeController {
 		return mv;
 	}
 	
+	//@Secured("ROLE_CADASTRAR_CIDADE") // essa anotação evitar deste método ser chamado por um usuário que não tem permissão
+	
+	
 	@PostMapping("/novo")
 	// Para recompilar o cache quando houver uma atulização nos dados que foram configurados para ficar em cache
 	// value = Local onde se encontra o seu cache.
