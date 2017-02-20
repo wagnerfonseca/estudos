@@ -10,7 +10,7 @@ import com.curso.brewer.model.Usuario;
 public class UsuarioSistema extends User {
 	
 	/*
-	 * Essa classe foi criado no intuido de ter um objeto que herde de User e possua os dados da classe Usuario
+	 * Essa classe foi criada no intuido de ter um objeto que herde de User e possua os dados da classe Usuario
 	 * 
 	 * */
 	
