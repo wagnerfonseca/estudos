@@ -6,7 +6,7 @@
          
          <!-- Esse arquivo web.xml é utilizado para configurações diretas com tomcat -->         
          <session-config>
-         	<session-timeout>1</session-timeout>
+         	<session-timeout>10</session-timeout>
          </session-config>
          
          <!-- Para o Tomcat encontrar o erro -->
