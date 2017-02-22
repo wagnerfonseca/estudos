@@ -48,6 +48,7 @@ public class Usuario implements Serializable {
 	private Boolean ativo;
 	
 	@Size(min = 1, message = "Selecione ao menos um grupo")
+	//Todas anotacao ManyToMany é por default fetch lazy
 	@ManyToMany // Seguindo sempre na ordem que se lê Um "Usuario" tem "MUITOS" Grupos e um "Grupo" pode ter "MUITOS" usuários
 	// Como existe uma tabela para fazer INTERSEÇÃO entre os GRUPO e USUARIO Usa a anotação @JoinTable
 	@JoinTable(
