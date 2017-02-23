@@ -3,11 +3,15 @@ package com.curso.brewer.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -16,6 +20,7 @@ import com.curso.brewer.repository.Grupos;
 import com.curso.brewer.repository.Usuarios;
 import com.curso.brewer.repository.filter.UsuarioFilter;
 import com.curso.brewer.service.CadastroUsuariosService;
+import com.curso.brewer.service.StatusUsuario;
 import com.curso.brewer.service.exception.EmailUsuarioJaCadastradoException;
 import com.curso.brewer.service.exception.SenhaObrigatoriaUsuarioException;
 
@@ -64,5 +69,18 @@ public class UsuariosController {
 		mv.addObject("grupos", grupos.findAll());		
 		return mv;
 	}
+	
+	/**
+	 * Para atualizar alguma coisa usamos o metodo Http PUT
+	 * 
+	 * O Spring tem um barramento de segurança que impede qualquer metodo PUT de receber parametros, por isso deve implementar um filter 
+	 * */
+	@PutMapping("/status")
+	@ResponseStatus(HttpStatus.OK) // para evitar o erro de 500
+	public void atualizarStatus(@RequestParam("codigos[]") Long[] codigos, @RequestParam("status") StatusUsuario status) { // o Spring MVC ja converte o Enum em String
+		//Arrays.asList(codigos).forEach(System.out::println);		
+		service.alterarStatus(codigos, status);
+	}
+	
 
 }

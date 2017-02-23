@@ -12,10 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -24,6 +26,7 @@ import com.curso.brewer.validation.AtributoConfirmacao;
 @AtributoConfirmacao(atributo = "senha", atributoConfirmacao = "confirmacaoSenha", message = "Confirmação da senha não confere")
 @Entity
 @Table(name = "usuario")
+@DynamicUpdate // Ele so faz o update para o campo alterado
 public class Usuario implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -57,6 +60,12 @@ public class Usuario implements Serializable {
 			inverseJoinColumns = @JoinColumn(name = "codigo_grupo") // NOME DA CHAVE/COLUNA NA TABELA (USUARIO_GRUPO) que faz ligacao com a classe de "Grupo"			
 	)
 	private List<Grupo> grupos;	
+	
+	
+	@PreUpdate
+	private void preUpdate() {
+		this.confirmacaoSenha = senha;
+	}
 	
 	public boolean isNovo() {
 		return codigo == null;

@@ -38,5 +38,10 @@ public class CadastroUsuariosService {
 		
 		usuarios.save(usuario);
 	}
+
+	@Transactional
+	public void alterarStatus(Long[] codigos, StatusUsuario status) {
+		status.executar(codigos, usuarios);
+	}
 	
 }
