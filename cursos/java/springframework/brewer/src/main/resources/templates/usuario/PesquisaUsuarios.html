@@ -64,11 +64,11 @@
 		
 		<div class="aw-datatable-toolbar">
 			<!--  Atraves do botao eu vou pegar tbm a URL  -->
-			<button class="btn btn-default  btn-xs  js-status-btn disabled" data:status="ATIVAR" data:url="@{/usuario/status}">
+			<button class="btn btn-default  btn-xs  js-status-btn disabled" data:status="ATIVAR" data:url="@{/usuarios/status}">
 				<span>Ativar</span>
 			</button>
 			
-			<button class="btn btn-default  btn-xs  js-status-btn disabled" data:status="DESATIVAR" data:url="@{/usuario/status}">
+			<button class="btn btn-default  btn-xs  js-status-btn disabled" data:status="DESATIVAR" data:url="@{/usuarios/status}">
 				<span>Desativar</span>
 			</button>
 		</div>
@@ -95,7 +95,7 @@
 					<tr th:each="usuario : ${pagina.conteudo}">
 						<td>
 							<!-- Desabilitar o usuario que esta logado, ele não pode desabilitar ele mesmo -->
-							<div class="checkbox  aw-checkbox-no-margin" th:if="${#authentication.principal.usuario.codigo != usario.codigo}">
+							<div class="checkbox  aw-checkbox-no-margin" th:if="${#authentication.principal.usuario.codigo != usuario.codigo}">
 	            				<input type="checkbox" class="js-selecao" data:codigo="${usuario.codigo}">
 	            				<label></label>
 	            			</div>

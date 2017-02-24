@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.curso.brewer.service.exception.NomeEstiloJaCadastradoException;
 
-/*
- * Esta classe vai ficar responsavel capturar as exceções lançadas e tratar o erros
+/**
+ * Esta classe vai ficar responsavel capturar as exceções/erros lançadas e tratar o exceções/erros e a nivel de Aplicação
+ * Deste q tenha um metodo anotado para captura-lo
+ * 
  * ControllerAdvice - fica responsavel por ficar monitorando os controllers
- * => O pacote desta classe deve ficar no mesmo pacote dos controllers <=
+ * =>###> O pacote desta classe deve ficar no mesmo pacote dos controllers <###<=
  * */
 @ControllerAdvice
 public class ControllerAdviceExceptionHandler {
