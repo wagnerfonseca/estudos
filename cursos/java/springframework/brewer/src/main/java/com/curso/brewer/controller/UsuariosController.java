@@ -71,7 +71,8 @@ public class UsuariosController {
 	}
 	
 	/**
-	 * Para atualizar alguma coisa usamos o metodo Http PUT
+	 * Aula: 21.4
+	 * Para atualizar alguma coisa usamos o metodo Http PUT 
 	 * 
 	 * O Spring tem um barramento de segurança que impede qualquer metodo PUT de receber parametros, por isso deve implementar um filter 
 	 * */

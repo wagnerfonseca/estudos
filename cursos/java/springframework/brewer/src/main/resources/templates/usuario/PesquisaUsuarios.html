@@ -63,11 +63,12 @@
 		</form>
 		
 		<div class="aw-datatable-toolbar">
-			<button class="btn btn-default  btn-xs  js-status-btn" data:status="ATIVAR">
+			<!--  Atraves do botao eu vou pegar tbm a URL  -->
+			<button class="btn btn-default  btn-xs  js-status-btn disabled" data:status="ATIVAR" data:url="@{/usuario/status}">
 				<span>Ativar</span>
 			</button>
 			
-			<button class="btn btn-default  btn-xs  js-status-btn" data:status="DESATIVAR">
+			<button class="btn btn-default  btn-xs  js-status-btn disabled" data:status="DESATIVAR" data:url="@{/usuario/status}">
 				<span>Desativar</span>
 			</button>
 		</div>
@@ -78,7 +79,7 @@
 	            	<tr>
 	            		<th class="table-usuarios-col-status">
 	            			<div class="checkbox  aw-checkbox-no-margin">
-	            				<input type="checkbox"/>
+	            				<input type="checkbox" class="js-selecao-todos"/>
 	            				<label></label>
 	            			</div>
 	            		</th>
@@ -93,7 +94,8 @@
 	            <tbody>
 					<tr th:each="usuario : ${usuarios}">
 						<td>
-							<div class="checkbox  aw-checkbox-no-margin">
+							<!-- Desabilitar o usuario que esta logado, ele não pode desabilitar ele mesmo -->
+							<div class="checkbox  aw-checkbox-no-margin" th:if="${#authentication.principal.usuario.codigo != usario.codigo}">
 	            				<input type="checkbox" class="js-selecao" data:codigo="${usuario.codigo}">
 	            				<label></label>
 	            			</div>
@@ -104,7 +106,16 @@
 							<!-- Toda interacao do thymeleaf sem cria um obejto com as estaticas e sempre tem um posfixo chamado "Stat"   -->
 							<span th:each="grupo : ${usuario.grupos}" th:text="|${grupo.nome}${grupoStat.last ? '' : ', '}|"></span>
 						</td>
-						<td th:text="${usuario.ativo} ? Ativo : Inativo"></td>
+						
+						<td>
+							<th:block th:if="${usuario.ativo}">
+								<span class="label label-success">Ativo</span>	
+							</th:block>
+							<th:block th:if="${not usuario.ativo}">
+								<span class="label label-danger">Inativo</span>	
+							</th:block>							
+						</td>
+						
 	                 	<td class="text-center">
 							<a class="btn  btn-link  btn-xs" title="Editar"> 
 								<i class="glyphicon glyphicon-pencil"></i>

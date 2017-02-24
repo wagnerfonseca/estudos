@@ -40,7 +40,7 @@ public class EstilosController {
 		return new ModelAndView("estilo/CadastroEstilo");
 	}
 	
-	// ModelAndView Retorna para mim uma página completa, um view completa
+	// ModelAndView uma página HTML completa, uma view completa
 	@RequestMapping(value = "/novo", method = RequestMethod.POST)
 	public ModelAndView salvar(@Valid Estilo estilo, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
@@ -59,6 +59,7 @@ public class EstilosController {
 		return new ModelAndView("redirect:/estilos/novo");
 	}
 	
+	// Aula 11.2
 	// ResponseEntity retorna um objeto que o javascript entende. Através dele, podemos acrescentar erros usando os codigos de resposta HTTP, e também utilizar dos outros codigo
 	// @RequestBody fica responsavel pode receber um dado valor em JSON e converter em Objeto
 	// @ResponseBody da mais autonomia na resposta. 
