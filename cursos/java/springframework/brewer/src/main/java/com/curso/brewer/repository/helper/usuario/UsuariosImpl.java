@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
@@ -15,7 +16,10 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
-import org.hibernate.sql.JoinType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -23,11 +27,15 @@ import com.curso.brewer.model.Grupo;
 import com.curso.brewer.model.Usuario;
 import com.curso.brewer.model.UsuarioGrupo;
 import com.curso.brewer.repository.filter.UsuarioFilter;
+import com.curso.brewer.repository.paginacao.PaginacaoUtil;
 
 public class UsuariosImpl implements UsuariosQueries {
 
 	@PersistenceContext
 	private EntityManager manager;
+	
+	@Autowired
+	private PaginacaoUtil paginacaoUtil; 
 	
 	@Override
 	@Transactional(readOnly = true) 
@@ -54,13 +62,25 @@ public class UsuariosImpl implements UsuariosQueries {
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	@Override
-	public List<Usuario> filtrar(UsuarioFilter filtro) {
+	public Page<Usuario> filtrar(UsuarioFilter filtro, Pageable pageable) {
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Usuario.class);
 		
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY); // distinct na entidade principal para nao deixar repetir o usuario
+		// criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY); // distinct na entidade principal para nao deixar repetir o usuario
+		paginacaoUtil.preparar(criteria, pageable);
 		adicionarFiltro(filtro, criteria);
 		
-		return criteria.list();
+		List<Usuario> filtrados = criteria.list();
+		//Inicializar os grupos um-por-um para evitar o erro de lazyException
+		filtrados.forEach(u -> Hibernate.initialize(u.getGrupos())); // dessa forma repete o numero de selects para grupo
+		
+		return new PageImpl<>(filtrados, pageable, total(filtro));
+	}
+	
+	private Long total(UsuarioFilter filter) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Usuario.class);
+		adicionarFiltro(filter, criteria);
+		criteria.setProjection(Projections.rowCount());
+		return (Long) criteria.uniqueResult();
 	}
 
 	private void adicionarFiltro(UsuarioFilter filtro, Criteria criteria) {
@@ -83,8 +103,9 @@ public class UsuariosImpl implements UsuariosQueries {
 			   )
 			 * */
 			
-			// Vou colocando em minha consulta os grupos que devem fazer parte da consulta			
-			criteria.createAlias("grupos", "g", JoinType.LEFT_OUTER_JOIN); // JoinType.LEFT_OUTER_JOIN para evitar de acontever o erro de LazyException.
+			// Vou colocando em minha consulta os grupos que devem fazer parte da consulta
+			// Aula 21.6 - Devido ao problema de paginação, os grupos dos usuários devem ser inicializados um-por-um
+			//criteria.createAlias("grupos", "g", JoinType.LEFT_OUTER_JOIN); // JoinType.LEFT_OUTER_JOIN para evitar de acontever o erro de LazyException.
 			
 			if (filtro.getGrupos() != null && !filtro.getGrupos().isEmpty()) {				
 				List<Criterion> subqueries = new ArrayList<>(); // Minhas subqueries

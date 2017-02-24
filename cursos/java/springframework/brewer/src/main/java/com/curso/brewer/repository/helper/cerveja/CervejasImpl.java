@@ -47,7 +47,7 @@ public class CervejasImpl implements CervejasQueries {
 	private EntityManager manager;
 	
 	@Autowired
-	private PaginacaoUtil PaginacaoUtil; 
+	private PaginacaoUtil paginacaoUtil; 
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -60,7 +60,7 @@ public class CervejasImpl implements CervejasQueries {
 		// Outra vantagem da utilização da Criteria é a join de tabelas
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Cerveja.class);
 				
-		PaginacaoUtil.preparar(criteria, pageable);
+		paginacaoUtil.preparar(criteria, pageable);
 		adicionarFiltro(filter, criteria);
 		
 		return new PageImpl<>(criteria.list(), pageable, total(filter));

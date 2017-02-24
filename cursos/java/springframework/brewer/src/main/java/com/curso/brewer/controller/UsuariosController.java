@@ -1,8 +1,11 @@
 package com.curso.brewer.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.curso.brewer.controller.page.PageWrapper;
 import com.curso.brewer.model.Usuario;
 import com.curso.brewer.repository.Grupos;
 import com.curso.brewer.repository.Usuarios;
@@ -63,10 +67,18 @@ public class UsuariosController {
 	}
 	
 	@GetMapping
-	public ModelAndView pesquisar(UsuarioFilter filtro) {
+	public ModelAndView pesquisar(UsuarioFilter filtro,
+			BindingResult result,
+			@PageableDefault(size = 4) 
+			Pageable pageable,
+			HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("usuario/PesquisaUsuarios");		
-		mv.addObject("usuarios", usuarios.filtrar(filtro));
-		mv.addObject("grupos", grupos.findAll());		
+		mv.addObject("grupos", grupos.findAll());
+		
+		
+		PageWrapper<Usuario> pagina = new PageWrapper<>(usuarios.filtrar(filtro, pageable), request); 
+		
+		mv.addObject("pagina", pagina);
 		return mv;
 	}
 	

@@ -92,7 +92,7 @@
 				</thead>
 			
 	            <tbody>
-					<tr th:each="usuario : ${usuarios}">
+					<tr th:each="usuario : ${pagina.conteudo}">
 						<td>
 							<!-- Desabilitar o usuario que esta logado, ele não pode desabilitar ele mesmo -->
 							<div class="checkbox  aw-checkbox-no-margin" th:if="${#authentication.principal.usuario.codigo != usario.codigo}">
@@ -126,12 +126,13 @@
 						</td>
 	                </tr>
 	                
-	                <tr th:if="${usuarios.empty}">
-	                	<td colspan="4">Nenhum usuário encontrado</td>
+	                <tr th:if="${pagina.vazia}">
+	                	<td colspan="6">Nenhum usuário encontrado</td>
 	                </tr>
 	             </tbody>
          	</table>
     	 </div>
+    	 <brewer:pagination page="${pagina}" />
 	</div>
 </section>
 <th:block layout:fragment="javascript-extra">
