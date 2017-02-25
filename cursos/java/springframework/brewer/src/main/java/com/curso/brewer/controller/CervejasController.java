@@ -1,5 +1,7 @@
 package com.curso.brewer.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -11,10 +13,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.curso.brewer.controller.page.PageWrapper;
+import com.curso.brewer.dto.CervejaDTO;
 import com.curso.brewer.model.Cerveja;
 import com.curso.brewer.model.Origem;
 import com.curso.brewer.model.Sabor;
@@ -87,5 +91,15 @@ public class CervejasController {
 		mv.addObject("pagina", pagina);
 		
 		return mv;
+	}
+	
+	
+	/**
+	 * Metodos para pequisar cerveja na tela de venda(Pedido)
+	 * @ResponseBody -  para retornar um objeto do tipo JSON
+	 * */
+	@GetMapping("/filtro")
+	public @ResponseBody List<CervejaDTO> fitro(String skuOuNome) {
+		return cervejas.porSkuOuNome(skuOuNome);
 	}
 }
