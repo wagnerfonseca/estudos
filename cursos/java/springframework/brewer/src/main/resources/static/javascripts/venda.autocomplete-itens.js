@@ -8,6 +8,12 @@ Brewer.Autocomplete = (function(){
 		var htmlTemplateAutocomplete = $('#template-autocomplete-cerveja').html();
 		// Pagina HTML compilada		
 		this.template = Handlebars.compile(htmlTemplateAutocomplete);
+		
+		// #CadastroMestreDetalhe
+		// A tabela de itens de venda precisa ouvir/saber o momento que uma cerveja pesquisada for selecionada
+		// cria um emissor de eventos para que outros "scrits" possam ouvir este envento quando uma cerveja for selecionada
+		this.emitter = $({});
+		this.on = this.emitter.on.bind(this.emitter);
 	}
 	
 	Autocomplete.prototype.iniciar = function() {
@@ -25,19 +31,35 @@ Brewer.Autocomplete = (function(){
 			// Este componente (easycomplete) permite eu mesmo criar o layout(HTML) de retorno
 			template: {
 				type: 'custom',
-				method: function(nome, cerveja) { // retorno
-					// Nome é referente a propridade "getValue"
-					// e Cerveja é o objeto de retorno do metodo "pesquisar" que esta implementado dentro do controller "CervejasController"
-					// console.log(arguments); "arguments" tem os dois retorno
-					
-					// nova propriedade para o objeto "cerveja.valorFormatado"
-					cerveja.valorFormatado = Brewer.formatarMoeda(cerveja.valor);
-					
-					// pagina HTML que vai receber o objeto "cerveja"
-					return this.template(cerveja);					
-				}.bind(this)
-			}
+				method: template.bind(this) // retorno
+			},
 			
+			// #CadastroMestreDetalhe			
+			// Esta propriedade do plugin "EasyAutocomplete" dispara no momento que um item é selecionado
+			list: {
+				onChooseEvent: onItemSelecionado.bind(this)
+			}
+		}
+		
+		function onItemSelecionado() {
+			// getSelectedItemData <- propriedade do "EasyAutoComplete" 
+			// console.log('item selecionado:', this.skuOuNomeInput.getSelectedItemData());
+			
+			// "item-selecionado" <- nome do envento
+			// this.skuOuNomeInput.getSelectedItemData() <- os dados que vão ser enviados
+			this.emitter.trigger('item-selecionado', this.skuOuNomeInput.getSelectedItemData() );
+		}
+		
+		function template(nome, cerveja) {			
+			// Nome é referente a propridade "getValue"
+			// e Cerveja é o objeto de retorno do metodo "pesquisar" que esta implementado dentro do controller "CervejasController"
+			// console.log(arguments); "arguments" tem os todos os valores de retorno
+			
+			// nova propriedade para o objeto "cerveja.valorFormatado"
+			cerveja.valorFormatado = Brewer.formatarMoeda(cerveja.valor);
+			
+			// pagina HTML que vai receber o objeto "cerveja"
+			return this.template(cerveja);	
 		}
 		
 		this.skuOuNomeInput.easyAutocomplete(options);
@@ -46,9 +68,3 @@ Brewer.Autocomplete = (function(){
 	return Autocomplete;
 	
 }()); 
-
-
-$(function(){
-	var autocomplete =  new Brewer.Autocomplete();
-	autocomplete.iniciar();
-});

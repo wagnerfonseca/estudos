@@ -35,10 +35,12 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import com.curso.brewer.controller.CervejasController;
 import com.curso.brewer.controller.converter.CidadeConverter;
 import com.curso.brewer.controller.converter.EstadoConverter;
 import com.curso.brewer.controller.converter.EstilosConverter;
 import com.curso.brewer.controller.converter.GrupoConverter;
+import com.curso.brewer.session.TabelaItensVenda;
 import com.curso.brewer.thymeleaf.BrewerDialect;
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import com.google.common.cache.CacheBuilder;
@@ -52,9 +54,13 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 @Configuration 
 /* Anotação fica responsavel por encontrar os controladores
- * basePackageClasses: configuro as classes que são controller 
- * basePackages: vetor de string onde posso configurar o pacote de controladores */
-@ComponentScan(basePackages = {"com.curso.brewer.controller"})
+ * basePackageClasses: configuro as classes que são controller **posso utilizar uma classe como parametro, para configurar o pacote 
+ * basePackages: vetor de string onde posso configurar o pacote de controladores
+ *  
+ * @ComponentScan(basePackages = {"com.curso.brewer.controller"})
+ * 
+ *  */ 
+@ComponentScan(basePackageClasses = {CervejasController.class, TabelaItensVenda.class})
 /* Habilitar este projeto para desenvolvimento WEB */
 @EnableWebMvc
 /* Habilitar o Spring para Paginação e ordenação */

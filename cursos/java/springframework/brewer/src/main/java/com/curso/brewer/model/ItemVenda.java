@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 /**
  * Aula 23.3 - Itens de venda
+ * #CadastroMestreDetalhe
  * */
 
 public class ItemVenda {
