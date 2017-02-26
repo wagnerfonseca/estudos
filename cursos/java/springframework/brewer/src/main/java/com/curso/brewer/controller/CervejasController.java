@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -98,8 +99,8 @@ public class CervejasController {
 	 * Metodos para pequisar cerveja na tela de venda(Pedido)
 	 * @ResponseBody -  para retornar um objeto do tipo JSON
 	 * */
-	@GetMapping("/filtro")
-	public @ResponseBody List<CervejaDTO> fitro(String skuOuNome) {
+	@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<CervejaDTO> pesquisar(String skuOuNome) {
 		return cervejas.porSkuOuNome(skuOuNome);
 	}
 }

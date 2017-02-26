@@ -5,9 +5,9 @@
          version="3.1">
          
          <!-- Esse arquivo web.xml é utilizado para configurações diretas com tomcat -->         
-         <session-config>
+         <!-- <session-config>
          	<session-timeout>10</session-timeout>
-         </session-config>
+         </session-config> -->
          
          <!-- Para o Tomcat encontrar o erro -->
          <error-page>

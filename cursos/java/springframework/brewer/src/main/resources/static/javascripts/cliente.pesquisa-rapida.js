@@ -6,10 +6,11 @@ Brewer.PesquisaRapidaCliente = (function(){
 		this.pesquisaRapidaClientesModal = $('#pesquisaRapidaClientes');
 		this.nomeInput = $('#nomeClienteModal');
 		this.pesquisaRapidaBtn = $('.js-pesquisa-rapida-clientes-btn');
-		
-		// HANDLEBARS
+				
 		// Container
 		this.containerTabelaPesquisa = $('#containerTabelaPesquisaRapidaClientes');
+		
+		// HANDLEBARS
 		// html
 		this.htmlTabelaPesquisa = $('#tabela-pesquisa-rapida-cliente').html();		
 		// Template
@@ -42,8 +43,8 @@ Brewer.PesquisaRapidaCliente = (function(){
 	function onPesquisaConcluida(resultado) {
 		this.mensagemErro.addClass('hidden');
 		
-		var html = this.template(resultado); //pega o Html, e joga o objeto JSON para dentro e compila o html renderizado com os valores
-		this.containerTabelaPesquisa.html(html);  // Pego o Resultado "compilado" e rederiza
+		var html = this.template(resultado); // um fragmento de Html recebe o objeto JSON, retornado o o fragmento com os valores do objeto
+		this.containerTabelaPesquisa.html(html);  // O container recebe o Resultado "compilado" e rederiza
 		
 		var tabelaPesquisaRapida = new Brewer.TabelaClientePesquisaRapida(this.pesquisaRapidaClientesModal);
 		tabelaPesquisaRapida.iniciar();		
