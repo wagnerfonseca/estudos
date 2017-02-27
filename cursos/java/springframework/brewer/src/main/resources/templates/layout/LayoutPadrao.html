@@ -27,7 +27,7 @@
 	<![endif]-->
 </head>
 <body>
-
+<!-- #CSRF  -->
 <!-- Acrescenta um input hidden com o token do CSRF quando não existe a instrução th:action -->
 <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
 <input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}" />

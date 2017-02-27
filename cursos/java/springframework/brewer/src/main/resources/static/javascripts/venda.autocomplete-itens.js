@@ -19,8 +19,8 @@ Brewer.Autocomplete = (function(){
 	Autocomplete.prototype.iniciar = function() {
 		var options = {
 			url: function(skuOuNome) {
-				return '/brewer/cervejas?skuOuNome=' + skuOuNome;
-			},
+				return this.skuOuNomeInput.data('url') + '?skuOuNome=' + skuOuNome;
+			}.bind(this),
 			getValue: 'nome', // valores que serão mostrados durante a pesquisa no autocomplete 
 			minCharNumber: 3, // Minimo de caracter para começar a pesquisar
 			requestDelay: 500,
@@ -48,6 +48,11 @@ Brewer.Autocomplete = (function(){
 			// "item-selecionado" <- nome do envento
 			// this.skuOuNomeInput.getSelectedItemData() <- os dados que vão ser enviados
 			this.emitter.trigger('item-selecionado', this.skuOuNomeInput.getSelectedItemData() );
+			
+			// apos o item ser selecionado
+			this.skuOuNomeInput.val('');
+			this.skuOuNomeInput.focus();
+			
 		}
 		
 		function template(nome, cerveja) {			

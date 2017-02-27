@@ -3,6 +3,7 @@ package com.curso.brewer.session;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
@@ -18,6 +19,7 @@ import com.curso.brewer.model.ItemVenda;
  * -- Calcular Valor Total
  * -- Adicionar Item na Tabela
  * -- Quantidade de Items na tabela
+ * -- Alterar quantidade de cerveja em um item
  * */
 
 /* @SessionScope adiconado na versão 4.3 Spring MVC
@@ -41,16 +43,44 @@ public class TabelaItensVenda {
 
 	
 	public void adicionarItem(Cerveja cerveja, Integer quantidade) {
-		ItemVenda itemVenda = new ItemVenda();
-		itemVenda.setCerveja(cerveja);
+		Optional<ItemVenda> itemVendaOpt = buscarItemPorCerveja(cerveja);
+			
+		ItemVenda itemVenda = null;
+		if (itemVendaOpt.isPresent()) {
+			itemVenda = itemVendaOpt.get();
+			itemVenda.setQuantidade(itemVenda.getQuantidade() + quantidade);
+		} else {		
+			itemVenda = new ItemVenda();
+			itemVenda.setCerveja(cerveja);
+			itemVenda.setQuantidade(quantidade);
+			itemVenda.setValorUnitario(cerveja.getValor());
+			itens.add(0, itemVenda);
+		}
+	}
+	
+	/** Alterar a quantidade de produto em um item */
+	public void alterarQuantidadeItens(Cerveja cerveja, Integer quantidade) {
+		ItemVenda itemVenda = buscarItemPorCerveja(cerveja).get();
 		itemVenda.setQuantidade(quantidade);
-		itemVenda.setValorUnitario(cerveja.getValor());
-		
-		itens.add(itemVenda);
 	}
 	
 	/** Total de itens na tabela */
 	public int total() {
 		return itens.size();
 	}
+
+
+	public List<ItemVenda> getItens() {		
+		return itens;
+	}
+	
+	private Optional<ItemVenda> buscarItemPorCerveja(Cerveja cerveja) {
+		// Adicionando o mesma cerveja para lista de itens de venda
+		Optional<ItemVenda> itemVendaOpt = itens.stream()
+				// filtra apenas os itens que são iguais ao objeto comparado
+				.filter(i -> i.getCerveja().equals(cerveja)) 
+				.findAny(); // encontro qualquer um
+		return itemVendaOpt;
+	}
+	
 }
