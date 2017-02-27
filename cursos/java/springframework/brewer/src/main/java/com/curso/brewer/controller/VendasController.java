@@ -1,5 +1,7 @@
 package com.curso.brewer.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.curso.brewer.model.Cerveja;
 import com.curso.brewer.repository.Cervejas;
-import com.curso.brewer.session.TabelaItensVenda;
+import com.curso.brewer.session.TabelaItensSession;
 
 @Controller
 @RequestMapping("/vendas")
@@ -22,22 +24,24 @@ public class VendasController {
 	private Cervejas cervejas;
 	
 	@Autowired
-	private TabelaItensVenda tabelaItensVenda;
+	private TabelaItensSession tabelaItensVenda;
 	
 	@GetMapping("/nova")
-	public String nova() {
-		return "venda/CadastroVenda";
+	public ModelAndView nova() {
+		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
+		mv.addObject("uuid", UUID.randomUUID().toString());
+		return mv;
 	}
 	
 	/**
 	 * Adionar um produto para os itens da venda 
 	 * */	
 	@PostMapping("/item")
-	public ModelAndView adicionarItem(Long codigoCerveja) {
+	public ModelAndView adicionarItem(Long codigoCerveja, String uuid) {
 		Cerveja cerveja = cervejas.findOne(codigoCerveja);
-		tabelaItensVenda.adicionarItem(cerveja, 1);
+		tabelaItensVenda.adicionarItem(uuid, cerveja);
 		
-		return getModelAndViewTabelaItens();
+		return getModelAndViewTabelaItens(uuid);
 	}
 
 	/**
@@ -55,25 +59,31 @@ public class VendasController {
 	@PutMapping("/item/{codigoCerveja}")
 	public ModelAndView alterarQuantidadeItem(
 			@PathVariable("codigoCerveja") Cerveja cerveja, // vem através de uma variavel declarada na URI de requisicao
-			Integer quantidade) { // vem no corpo da requisição		
-		tabelaItensVenda.alterarQuantidadeItens(cerveja, quantidade);
+			Integer quantidade,
+			String uuid) { // vem no corpo da requisição		
+		tabelaItensVenda.alterarQuantidadeItens(uuid, cerveja, quantidade);
 		
-		return getModelAndViewTabelaItens();
+		return getModelAndViewTabelaItens(uuid);
 	}
 	
 	/**
-	 * Excluir o item de venda 
+	 * Excluir o item de venda
+	 * 
+	 * Dentro do protocolo HTTP, quando o verbo é "DELETE"
+	 * não tem como colocar o parametro dentro do corpo da requisicao
 	 * */
-	@DeleteMapping("/item/{codigoCerveja}")
-	public ModelAndView excluirItem(@PathVariable("codigoCerveja") Cerveja cerveja) {
-		tabelaItensVenda.excluirItem(cerveja);
+	@DeleteMapping("/item/{uuid}/{codigoCerveja}")
+	public ModelAndView excluirItem(
+			@PathVariable("codigoCerveja") Cerveja cerveja,
+			@PathVariable String uuid) {
+		tabelaItensVenda.excluirItem(uuid, cerveja);
 		
-		return getModelAndViewTabelaItens();
+		return getModelAndViewTabelaItens(uuid);
 	}
 
-	private ModelAndView getModelAndViewTabelaItens() {
+	private ModelAndView getModelAndViewTabelaItens(String uuid) {
 		ModelAndView mv = new ModelAndView("venda/TabelaItensVenda");
-		mv.addObject("itens", tabelaItensVenda.getItens());
+		mv.addObject("itens", tabelaItensVenda.getItens(uuid));
 		return mv;
 	}
 	

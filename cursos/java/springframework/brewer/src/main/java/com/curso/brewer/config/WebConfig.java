@@ -41,7 +41,7 @@ import com.curso.brewer.controller.converter.CidadeConverter;
 import com.curso.brewer.controller.converter.EstadoConverter;
 import com.curso.brewer.controller.converter.EstilosConverter;
 import com.curso.brewer.controller.converter.GrupoConverter;
-import com.curso.brewer.session.TabelaItensVenda;
+import com.curso.brewer.session.TabelaItensSession;
 import com.curso.brewer.thymeleaf.BrewerDialect;
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import com.google.common.cache.CacheBuilder;
@@ -61,7 +61,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
  * @ComponentScan(basePackages = {"com.curso.brewer.controller"})
  * 
  *  */ 
-@ComponentScan(basePackageClasses = {CervejasController.class, TabelaItensVenda.class})
+@ComponentScan(basePackageClasses = {CervejasController.class, TabelaItensSession.class})
 /* Habilitar este projeto para desenvolvimento WEB */
 @EnableWebMvc
 /* Habilitar o Spring para Paginação e ordenação */
