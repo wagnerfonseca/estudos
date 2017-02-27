@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.number.NumberStyleFormatter;
@@ -184,6 +185,14 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		bundle.setBasename("classpath:/messages"); //não precisa colocar .properties
 		bundle.setDefaultEncoding("UTF-8"); // 
 		return bundle;
+	}
+	
+	/* devido a integracao do JPA com Spring MVC. Este Bean fica responsavel por converter o codigo da requisao em 
+	 * objeto da entidade, sem a necessidade de implementação própria
+	 * evitando uma linha a menos em seu codigo */
+	@Bean
+	public DomainClassConverter<FormattingConversionService> domainClassConverter() {
+		return new DomainClassConverter<FormattingConversionService>(mvcConversionService());
 	}
 	
 }

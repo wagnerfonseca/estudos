@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
@@ -20,6 +21,7 @@ import com.curso.brewer.model.ItemVenda;
  * -- Adicionar Item na Tabela
  * -- Quantidade de Items na tabela
  * -- Alterar quantidade de cerveja em um item
+ * -- Excluir um item de venda
  * */
 
 /* @SessionScope adiconado na versão 4.3 Spring MVC
@@ -62,6 +64,18 @@ public class TabelaItensVenda {
 	public void alterarQuantidadeItens(Cerveja cerveja, Integer quantidade) {
 		ItemVenda itemVenda = buscarItemPorCerveja(cerveja).get();
 		itemVenda.setQuantidade(quantidade);
+	}
+	
+	
+	/** Excluir um item  */
+	public void excluirItem(Cerveja cerveja) {
+		// o remove de ArrayList é por indice
+		// E eu tenho apenas o objeto de cerveja, vou procurar pelo indice na lista de itens atraves do objeto de cerveja
+		int indice = IntStream.range(0, itens.size())
+						.filter(i -> itens.get(i).getCerveja().equals(cerveja))
+						.findAny()
+						.getAsInt();
+		itens.remove(indice);
 	}
 	
 	/** Total de itens na tabela */

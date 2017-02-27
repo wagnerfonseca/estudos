@@ -37,20 +37,13 @@ Brewer.TabelaItens = (function () {
 		// Alterar quantidade do item de venda
 		$('.js-tabela-cerveja-quantidade-item').on('change', onQuantidadeItemAlterado.bind(this));
 		
-		// Deletar item de venda
+		// Deletar item de venda - botao
 		$('.js-tabela-item').on('dblclick', onDoubleClickShowDeleteItem);
+		// Deletar item de venad - comando
+		$('.js-exclusao-item-btn').on('click', onExclusaoItemClick.bind(this));
 		
 	}
 	
-	function onDoubleClickShowDeleteItem(evento) {
-		// evento.target onde eu cliquei
-		// evento.currentTarget <- quem escuta o meu envento que neste caso é a tabela de itens ->> "js-tabela-item"
-		
-		// var item = $(evento.currentTarget);       >>> 
-		// item.toggleClass('solicitando-exclusao')  >>>  $(this).toggleClass('solicitando-exclusao')
-		
-		$(this).toggleClass('solicitando-exclusao');
-	}
 	
 	function onQuantidadeItemAlterado(evento) {
 		var input = $(evento.target); // o input que disparou o evento
@@ -67,6 +60,27 @@ Brewer.TabelaItens = (function () {
 		
 		resposta.done(onItemAdicionadoServidor.bind(this));
 		
+	}
+	
+	function onDoubleClickShowDeleteItem(evento) {
+		// evento.target onde eu cliquei
+		// evento.currentTarget <- quem escuta o meu envento que neste caso é a tabela de itens ->> "js-tabela-item"
+		
+		// var item = $(evento.currentTarget);       >>> 
+		// item.toggleClass('solicitando-exclusao')  >>>  $(this).toggleClass('solicitando-exclusao')
+		
+		$(this).toggleClass('solicitando-exclusao');
+	}
+
+	function onExclusaoItemClick(evento) {
+		var codigoCerveja = $(evento.target).data('codigo-cerveja'); 
+		
+		var resposta = $.ajax({
+			url: 'item/' + codigoCerveja,
+			method: 'DELETE'					
+		});
+		
+		resposta.done(onItemAdicionadoServidor.bind(this));
 	}
 	
 	return TabelaItens;

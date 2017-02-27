@@ -2,6 +2,7 @@ package com.curso.brewer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,7 @@ public class VendasController {
 	}
 	
 	/**
-	 * Adionar um produto para os itens da venda
+	 * Adionar um produto para os itens da venda 
 	 * */	
 	@PostMapping("/item")
 	public ModelAndView adicionarItem(Long codigoCerveja) {
@@ -40,14 +41,32 @@ public class VendasController {
 	}
 
 	/**
-	 * alterar Quantidade
+	 * Alterar Quantidade do produto no item de venda
+	 * 
+	 * * Como o JPA tem um integração com Spring MVC, você pode eliminar uma linha de codigo 
+	 * convertendo o codigo da entidade direto em objeto
+	 * 
+	 * Injetar um Bean que fica responsavel por fazer essa conversão no "WebConfig.java"
+	 * 
+	 * remove a linha: Cerveja cerveja = cervejas.findOne(codigoCerveja);
+	 * e confira o path variable
+	 * 
 	 * */
 	@PutMapping("/item/{codigoCerveja}")
 	public ModelAndView alterarQuantidadeItem(
-			@PathVariable Long codigoCerveja, // vem pela path de requisicao
-			Integer quantidade) { // vem no corpo da requisição
-		Cerveja cerveja = cervejas.findOne(codigoCerveja);
+			@PathVariable("codigoCerveja") Cerveja cerveja, // vem através de uma variavel declarada na URI de requisicao
+			Integer quantidade) { // vem no corpo da requisição		
 		tabelaItensVenda.alterarQuantidadeItens(cerveja, quantidade);
+		
+		return getModelAndViewTabelaItens();
+	}
+	
+	/**
+	 * Excluir o item de venda 
+	 * */
+	@DeleteMapping("/item/{codigoCerveja}")
+	public ModelAndView excluirItem(@PathVariable("codigoCerveja") Cerveja cerveja) {
+		tabelaItensVenda.excluirItem(cerveja);
 		
 		return getModelAndViewTabelaItens();
 	}
