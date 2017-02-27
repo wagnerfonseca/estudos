@@ -34,7 +34,22 @@ Brewer.TabelaItens = (function () {
 		// Renderiza o HTML dos itens
 		this.tabelaCervejasContainer.html(html);
 		
+		// Alterar quantidade do item de venda
 		$('.js-tabela-cerveja-quantidade-item').on('change', onQuantidadeItemAlterado.bind(this));
+		
+		// Deletar item de venda
+		$('.js-tabela-item').on('dblclick', onDoubleClickShowDeleteItem);
+		
+	}
+	
+	function onDoubleClickShowDeleteItem(evento) {
+		// evento.target onde eu cliquei
+		// evento.currentTarget <- quem escuta o meu envento que neste caso é a tabela de itens ->> "js-tabela-item"
+		
+		// var item = $(evento.currentTarget);       >>> 
+		// item.toggleClass('solicitando-exclusao')  >>>  $(this).toggleClass('solicitando-exclusao')
+		
+		$(this).toggleClass('solicitando-exclusao');
 	}
 	
 	function onQuantidadeItemAlterado(evento) {
