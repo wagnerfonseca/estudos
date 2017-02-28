@@ -80,7 +80,7 @@ public class Cerveja implements Serializable {
 	
 	private String foto;
 	@Column(name="content_type")
-	private String contentType;
+	private String contentType;	
 	
 	/* ----------------------------------
 	 Métodos de Callback do JPA
