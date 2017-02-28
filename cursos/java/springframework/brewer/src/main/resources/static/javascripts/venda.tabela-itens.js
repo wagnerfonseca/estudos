@@ -8,6 +8,9 @@ Brewer.TabelaItens = (function () {
 		this.autocomplete = autocomplete;
 		this.tabelaCervejasContainer = $('.js-tabela-cervejas-container');
 		this.uuid = $('#uuid').val();
+		
+		this.emitter = $({});
+		this.on = this.emitter.on.bind(this.emitter);
 	}
 	
 	TabelaItens.prototype.iniciar =  function() {
@@ -33,22 +36,9 @@ Brewer.TabelaItens = (function () {
 			}
 		});
 		
-		resposta.done(onItemAdicionadoServidor.bind(this));
+		resposta.done(onItemAtualizadoServidor.bind(this));
 	}
 	
-	function onItemAdicionadoServidor(html) {
-		// Renderiza o HTML dos itens
-		this.tabelaCervejasContainer.html(html);
-		
-		// Alterar quantidade do item de venda
-		$('.js-tabela-cerveja-quantidade-item').on('change', onQuantidadeItemAlterado.bind(this));
-		
-		// Deletar item de venda - botao
-		$('.js-tabela-item').on('dblclick', onDoubleClickShowDeleteItem);
-		// Deletar item de venad - comando
-		$('.js-exclusao-item-btn').on('click', onExclusaoItemClick.bind(this));
-		
-	}
 	
 	/**
 	 * Alterar Itens
@@ -56,6 +46,12 @@ Brewer.TabelaItens = (function () {
 	function onQuantidadeItemAlterado(evento) {
 		var input = $(evento.target); // o input que disparou o evento
 		var quantidade = input.val(); 
+		
+		if (quantidade <= 0) {
+			input.val(1);
+			quantidade = 1;
+		}	
+		
 		var codigoCerveja = input.data('codigo-cerveja');
 		
 		var resposta = $.ajax({
@@ -67,18 +63,8 @@ Brewer.TabelaItens = (function () {
 			}			
 		});
 		
-		resposta.done(onItemAdicionadoServidor.bind(this));
+		resposta.done(onItemAtualizadoServidor.bind(this));
 		
-	}
-	
-	function onDoubleClickShowDeleteItem(evento) {
-		// evento.target onde eu cliquei
-		// evento.currentTarget <- quem escuta o meu envento que neste caso é a tabela de itens ->> "js-tabela-item"
-		
-		// var item = $(evento.currentTarget);       >>> 
-		// item.toggleClass('solicitando-exclusao')  >>>  $(this).toggleClass('solicitando-exclusao')
-		
-		$(this).toggleClass('solicitando-exclusao');
 	}
 	
 	/**
@@ -92,17 +78,47 @@ Brewer.TabelaItens = (function () {
 			method: 'DELETE'					
 		});
 		
-		resposta.done(onItemAdicionadoServidor.bind(this));
+		resposta.done(onItemAtualizadoServidor.bind(this));
+	}
+	
+	
+	function onDoubleClickShowDeleteItem(evento) {
+		// evento.target onde eu cliquei
+		// evento.currentTarget <- quem escuta o meu envento que neste caso é a tabela de itens ->> "js-tabela-item"
+		
+		// var item = $(evento.currentTarget);       >>> 
+		// item.toggleClass('solicitando-exclusao')  >>>  $(this).toggleClass('solicitando-exclusao')
+		
+		$(this).toggleClass('solicitando-exclusao');
+	}
+	
+	/**
+	 * Atualiza o html quem vem do arquivo "TabelaItensVenda.html"
+	 * e renderiza dentro do container
+	 * */	
+	function onItemAtualizadoServidor(html) {
+		// Renderiza o HTML dos itens
+		this.tabelaCervejasContainer.html(html);
+		
+		// Alterar quantidade do item de venda
+		var quantidadeItemInput = $('.js-tabela-cerveja-quantidade-item'); 
+		quantidadeItemInput.on('change', onQuantidadeItemAlterado.bind(this));
+		quantidadeItemInput.maskMoney({ precision: 0, thousands: ''});
+		
+		// Deletar item de venda - botao
+		var tabelaItem = $('.js-tabela-item'); 
+		tabelaItem.on('dblclick', onDoubleClickShowDeleteItem);
+		// Deletar item de venda - comando
+		$('.js-exclusao-item-btn').on('click', onExclusaoItemClick.bind(this));
+		
+		
+		
+		// Criando um evento que pode ser escutado
+		// Um emissor envia dados para outros scripts
+		this.emitter.trigger('tabela-itens-atualizada', tabelaItem.data('valor-total'));
+		
 	}
 	
 	return TabelaItens;
 	
 }());
-
-$(function(){
-	var autocomplete =  new Brewer.Autocomplete();
-	autocomplete.iniciar();
-	
-	var tabelaItens =  new Brewer.TabelaItens(autocomplete);
-	tabelaItens.iniciar();
-});

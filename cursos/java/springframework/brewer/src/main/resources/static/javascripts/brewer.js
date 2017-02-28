@@ -96,9 +96,16 @@ Brewer.Security = (function(){
 
 
 // metodo estatico
+numeral.language('pt-br');
+
 Brewer.formatarMoeda = function(valor) {
-	numeral.language('pt-br');
+	//numeral.language('pt-br');
 	return numeral(valor).format('0,0.00');
+}
+
+Brewer.recuperarValor =  function(valorFormatado) {
+	//numeral.language('pt-br');
+	return numeral().unformat(valorFormatado);
 }
 
 

@@ -1,5 +1,6 @@
 package com.curso.brewer.session;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,11 +51,14 @@ public class TabelaItensSession {
 		return getTabelaItensVenda(uuid).getItens();
 	}
 	
+	public BigDecimal getValorTotal(String uuid) {
+		return getTabelaItensVenda(uuid).getValorTotal();
+	}
+	
 	private TabelaItensVenda getTabelaItensVenda(String uuid) {
 		return tabelas.stream()
 				.filter(t -> t.getUuid().equals(uuid))
 				.findAny()
 				.orElse(new TabelaItensVenda(uuid));
-	}
-
+	}	
 }
