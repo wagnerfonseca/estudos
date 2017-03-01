@@ -3,6 +3,7 @@ package com.curso.brewer.controller;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.curso.brewer.model.Cerveja;
+import com.curso.brewer.model.Venda;
 import com.curso.brewer.repository.Cervejas;
+import com.curso.brewer.security.UsuarioSistema;
+import com.curso.brewer.service.CadastroVendaService;
 import com.curso.brewer.session.TabelaItensSession;
 
 @Controller
@@ -26,11 +31,28 @@ public class VendasController {
 	@Autowired
 	private TabelaItensSession tabelaItensVenda;
 	
+	@Autowired
+	private CadastroVendaService cadastroVendaService;
+	
 	@GetMapping("/nova")
-	public ModelAndView nova() {
+	public ModelAndView nova(Venda venda) {
 		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
-		mv.addObject("uuid", UUID.randomUUID().toString());
+		venda.setUuid(UUID.randomUUID().toString());
 		return mv;
+	}
+	
+	@PostMapping("/nova")
+	public ModelAndView salvar(Venda venda, RedirectAttributes attr, @AuthenticationPrincipal UsuarioSistema usuario) {
+				
+		// @AuthenticationPrincipal recebendo o usuario logado
+		venda.setUsuario(usuario.getUsuario());
+		
+		// Recuperando os itens da venda
+		venda.adicionarItens(tabelaItensVenda.getItens(venda.getUuid()));
+		
+		cadastroVendaService.salvar(venda);
+		attr.addFlashAttribute("mensagem", "Venda salva com sucesso");
+		return new ModelAndView("redirect:/vendas/nova");
 	}
 	
 	/**

@@ -1,9 +1,12 @@
 package com.curso.brewer.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "venda")
@@ -38,11 +42,11 @@ public class Venda {
 	
 	private String observacao;
 	
-	@Column(name = "data_entrega")
-	private LocalDateTime dataEntrega;
+	@Column(name = "data_hora_entrega")
+	private LocalDateTime dataHoraEntrega;
 	
 	@Enumerated(EnumType.STRING)
-	private StatusVenda status;
+	private StatusVenda status =  StatusVenda.ORCAMENTO;
 	
 	@ManyToOne
 	@JoinColumn(name="codigo_cliente", nullable=false)
@@ -52,8 +56,18 @@ public class Venda {
 	@JoinColumn(name="codigo_usuario", nullable=false)
 	private Usuario usuario;
 	
-	@OneToMany(mappedBy = "venda")
+	/* javax.persistence.CascadeType.ALL - para salvar os itens da venda */
+	@OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
 	private List<ItemVenda> itens;
+	
+	@Transient
+	private String uuid;
+	
+	@Transient
+	private LocalDate dataEntrega;
+	
+	@Transient
+	private LocalTime horarioEntrega;
 
 	public Long getCodigo() {
 		return codigo;
@@ -103,12 +117,12 @@ public class Venda {
 		this.observacao = observacao;
 	}
 
-	public LocalDateTime getDataEntrega() {
-		return dataEntrega;
+	public LocalDateTime getDataHoraEntrega() {
+		return dataHoraEntrega;
 	}
 
-	public void setDataEntrega(LocalDateTime dataEntrega) {
-		this.dataEntrega = dataEntrega;
+	public void setDataHoraEntrega(LocalDateTime dataHoraEntrega) {
+		this.dataHoraEntrega = dataHoraEntrega;
 	}
 
 	public StatusVenda getStatus() {
@@ -142,6 +156,42 @@ public class Venda {
 	public void setItens(List<ItemVenda> itens) {
 		this.itens = itens;
 	}
+	
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}	
+	
+	public LocalDate getDataEntrega() {
+		return dataEntrega;
+	}
+
+	public void setDataEntrega(LocalDate dataEntrega) {
+		this.dataEntrega = dataEntrega;
+	}	
+	
+	public LocalTime getHorarioEntrega() {
+		return horarioEntrega;
+	}
+
+	public void setHorarioEntrega(LocalTime horarioEntrega) {
+		this.horarioEntrega = horarioEntrega;
+	}
+
+	public Boolean isNova() {
+		return this.codigo == null;
+	}
+	
+	/**
+	 * Para cada item de venda, tenho que setar com o codigo da venda
+	 * */
+	public void adicionarItens(List<ItemVenda> itens) {
+		this.itens = itens;
+		this.itens.forEach(i -> i.setVenda(this));
+	}			
 
 	@Override
 	public int hashCode() {
@@ -166,6 +216,6 @@ public class Venda {
 		} else if (!codigo.equals(other.codigo))
 			return false;
 		return true;
-	}	
+	}
 	
 }
