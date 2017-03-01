@@ -13,9 +13,20 @@ Brewer.TabelaItens = (function () {
 		this.on = this.emitter.on.bind(this.emitter);
 	}
 	
+	
+	/** Disponibilizando o valor total dos itens  */
+	TabelaItens.prototype.valorTotal = function() {
+		return this.tabelaCervejasContainer.data('valor');
+	}
+	
 	TabelaItens.prototype.iniciar =  function() {
 		// quero escutar o evento que foi criado em Brewer.Autocomplete
 		this.autocomplete.on('item-selecionado', onItemSelecionado.bind(this));		
+		
+		// Atualiza a quantidade
+		bindQuantidade.call(this);		
+		
+		bindBotaoExcluirTabelaItem.call(this);	
 	}
 	
 	/**
@@ -101,23 +112,33 @@ Brewer.TabelaItens = (function () {
 		this.tabelaCervejasContainer.html(html);
 		
 		// Alterar quantidade do item de venda
-		var quantidadeItemInput = $('.js-tabela-cerveja-quantidade-item'); 
-		quantidadeItemInput.on('change', onQuantidadeItemAlterado.bind(this));
-		quantidadeItemInput.maskMoney({ precision: 0, thousands: ''});
+		bindQuantidade.call(this);
 		
-		// Deletar item de venda - botao
-		var tabelaItem = $('.js-tabela-item'); 
-		tabelaItem.on('dblclick', onDoubleClickShowDeleteItem);
-		// Deletar item de venda - comando
-		$('.js-exclusao-item-btn').on('click', onExclusaoItemClick.bind(this));
-		
-		
+		var tabelaItem = bindBotaoExcluirTabelaItem.call(this);	
 		
 		// Criando um evento que pode ser escutado
 		// Um emissor envia dados para outros scripts
 		this.emitter.trigger('tabela-itens-atualizada', tabelaItem.data('valor-total'));
 		
 	}
+	
+	
+	function bindQuantidade() {
+		var quantidadeItemInput = $('.js-tabela-cerveja-quantidade-item'); 
+		quantidadeItemInput.on('change', onQuantidadeItemAlterado.bind(this));
+		quantidadeItemInput.maskMoney({ precision: 0, thousands: ''});
+	}
+	
+	function bindBotaoExcluirTabelaItem() {
+		// Deletar item de venda - botao
+		var tabelaItem = $('.js-tabela-item'); 
+		tabelaItem.on('dblclick', onDoubleClickShowDeleteItem);
+		// Deletar item de venda - comando
+		$('.js-exclusao-item-btn').on('click', onExclusaoItemClick.bind(this));	
+		return tabelaItem;
+	}
+	
+	
 	
 	return TabelaItens;
 	
