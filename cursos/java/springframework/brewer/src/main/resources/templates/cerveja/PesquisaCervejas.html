@@ -119,7 +119,7 @@
 					<tr th:each="cerveja : ${pagina.conteudo}">
 						<td class="text-center">
 							<!-- {nome_variavel} (nome_variavel=)-->
-							<img th:src="@{/fotos/thumbnail.{foto}(foto=${cerveja.fotoOrMock})}" class="img-responsive"/>
+							<img th:src="@{/fotos/thumbnail.{foto}(foto=${cerveja.fotoOuMock})}" class="img-responsive"/>
 						</td>
 						<td class="text-center" th:text="${cerveja.sku}">AA1234</td>
 						<td th:text="${cerveja.nome}">Cerveja Stella</td>

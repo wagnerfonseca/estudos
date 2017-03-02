@@ -44,8 +44,12 @@ public class MenuAttributeTagProcessor extends AbstractAttributeTagProcessor {
 		HttpServletRequest request = ((IWebContext) context).getRequest();
 		String uri = request.getRequestURI();
 	
+		/*
+		 * Na maioria dos casos eu desejo deixar dois link de pesquisa e cadastro para o mesmo link de menu * 
+		 * uri.startsWith(menu)
+		 * */
 		
-		if (uri.startsWith(menu)) {
+		if (uri.matches(menu)) {
 			String classesExistentes = tag.getAttributeValue("class"); //pego todos os valores que estão contidos em "class"
 			structureHandler.setAttribute("class", classesExistentes + " is-active"); // modifico os valores contidos em "class"
 		}

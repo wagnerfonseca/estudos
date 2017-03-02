@@ -2,7 +2,11 @@ package com.curso.brewer.controller;
 
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -18,10 +22,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.curso.brewer.controller.page.PageWrapper;
 import com.curso.brewer.controller.validator.VendaValidator;
 import com.curso.brewer.model.Cerveja;
+import com.curso.brewer.model.StatusVenda;
+import com.curso.brewer.model.TipoPessoa;
 import com.curso.brewer.model.Venda;
 import com.curso.brewer.repository.Cervejas;
+import com.curso.brewer.repository.Vendas;
+import com.curso.brewer.repository.filter.VendaFilter;
 import com.curso.brewer.security.UsuarioSistema;
 import com.curso.brewer.service.CadastroVendaService;
 import com.curso.brewer.session.TabelaItensSession;
@@ -40,13 +49,19 @@ public class VendasController {
 	private CadastroVendaService cadastroVendaService;
 	
 	@Autowired
+	private Vendas vendas;
+	
+	@Autowired
 	private VendaValidator vendaValidator;
 	
 	/* inicializar o validador
 	 * fazendo um vinculo com a classe de validação personalizada 
 	 * 
-	 * InitBinder faz o vinculo quando encontrar a anotacao @valid */
-	@InitBinder
+	 * InitBinder faz o vinculo quando encontrar a anotacao @valid 
+	 * Especifico por objeto referente ao Venda do metodo nova
+	 * 
+	 * */
+	@InitBinder("venda")
 	public void inicializarValidador(WebDataBinder binder) {
 		binder.setValidator(vendaValidator);
 	}
@@ -107,7 +122,7 @@ public class VendasController {
 		venda.setUsuario(usuario.getUsuario());		
 		
 		cadastroVendaService.salvar(venda);
-		attr.addFlashAttribute("mensagem", "Venda salva e email enviad com sucesso");
+		attr.addFlashAttribute("mensagem", "Venda salva e email enviado com sucesso");
 		return new ModelAndView("redirect:/vendas/nova");
 	}
 	
@@ -159,6 +174,19 @@ public class VendasController {
 		tabelaItensVenda.excluirItem(uuid, cerveja);
 		
 		return getModelAndViewTabelaItens(uuid);
+	}
+	
+	@GetMapping
+	public ModelAndView pesquisar(VendaFilter vendaFilter,
+			@PageableDefault(size = 3) Pageable pageable, HttpServletRequest httpServletRequest) {
+		ModelAndView mv = new ModelAndView("/venda/PesquisaVendas");
+		mv.addObject("todosStatus", StatusVenda.values());
+		mv.addObject("tiposPessoa", TipoPessoa.values());
+		
+		PageWrapper<Venda> paginaWrapper = new PageWrapper<>(vendas.filtrar(vendaFilter, pageable)
+				, httpServletRequest);
+		mv.addObject("pagina", paginaWrapper);
+		return mv;
 	}
 
 	private ModelAndView getModelAndViewTabelaItens(String uuid) {
