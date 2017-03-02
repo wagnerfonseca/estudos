@@ -5,6 +5,7 @@ Brewer.Venda = (function(){
 		this.valorTotalBox = $('.js-valor-total-box');
 		this.valorFreteInput = $('#valorFrete');
 		this.valorDescontoInput = $('#valorDesconto');
+		this.valorTotalBoxContainer = $('.js-valor-total-box-container');
 		
 		this.valorTotalItens = this.tabelaItens.valorTotal();
 		this.valorFrete = this.valorFreteInput.data('valor');

@@ -64,26 +64,54 @@ public class VendasController {
 		return mv;
 	}
 	
-	@PostMapping("/nova")
+	
+	@PostMapping(value = "/nova", params = "salvar")
 	public ModelAndView salvar(Venda venda, BindingResult result, RedirectAttributes attr, @AuthenticationPrincipal UsuarioSistema usuario) {
-		// Recuperando os itens da venda
-		venda.adicionarItens(tabelaItensVenda.getItens(venda.getUuid()));
-		venda.calcularValorTotal();
-		
-		// Este agora é o momento da validacao
-		vendaValidator.validate(venda, result);
+		validarVenda(venda, result);
 		if (result.hasErrors()) {
 			return nova(venda);
 		}
 		
 		// @AuthenticationPrincipal recebendo o usuario logado
-		venda.setUsuario(usuario.getUsuario());
-		
+		venda.setUsuario(usuario.getUsuario());		
 		
 		cadastroVendaService.salvar(venda);
 		attr.addFlashAttribute("mensagem", "Venda salva com sucesso");
 		return new ModelAndView("redirect:/vendas/nova");
 	}
+
+	
+	@PostMapping(value = "/nova", params = "emitir")
+	public ModelAndView emitir(Venda venda, BindingResult result, RedirectAttributes attr, @AuthenticationPrincipal UsuarioSistema usuario) {
+		validarVenda(venda, result);
+		if (result.hasErrors()) {
+			return nova(venda);
+		}
+		
+		// @AuthenticationPrincipal recebendo o usuario logado
+		venda.setUsuario(usuario.getUsuario());		
+		
+		cadastroVendaService.emitir(venda);
+		attr.addFlashAttribute("mensagem", "Venda emitida com sucesso");
+		return new ModelAndView("redirect:/vendas/nova");
+	}
+	
+	@PostMapping(value = "/nova", params = "enviarEmail")
+	public ModelAndView enviarEmail(Venda venda, BindingResult result, RedirectAttributes attr, @AuthenticationPrincipal UsuarioSistema usuario) {
+		validarVenda(venda, result);
+		if (result.hasErrors()) {
+			return nova(venda);
+		}
+		
+		// @AuthenticationPrincipal recebendo o usuario logado
+		venda.setUsuario(usuario.getUsuario());		
+		
+		cadastroVendaService.salvar(venda);
+		attr.addFlashAttribute("mensagem", "Venda salva e email enviad com sucesso");
+		return new ModelAndView("redirect:/vendas/nova");
+	}
+	
+		
 	
 	/**
 	 * Adionar um produto para os itens da venda 
@@ -140,4 +168,12 @@ public class VendasController {
 		return mv;
 	}
 	
+	private void validarVenda(Venda venda, BindingResult result) {
+		// Recuperando os itens da venda
+		venda.adicionarItens(tabelaItensVenda.getItens(venda.getUuid()));
+		venda.calcularValorTotal();
+		
+		// Este agora é o momento da validacao
+		vendaValidator.validate(venda, result);
+	}
 }
