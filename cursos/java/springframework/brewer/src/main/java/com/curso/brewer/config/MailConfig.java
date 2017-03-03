@@ -4,13 +4,17 @@ import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import com.curso.brewer.mail.Mailer;
+
 @Configuration
+@ComponentScan(basePackageClasses = Mailer.class)
 /* ${ambiente:local}
  * ambiente = é o nome da variavel
  * local = é o valor string padrão caso a variavel "ambiente" não possuir nenhum valor

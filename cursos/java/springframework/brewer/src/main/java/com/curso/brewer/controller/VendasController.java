@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.curso.brewer.controller.page.PageWrapper;
 import com.curso.brewer.controller.validator.VendaValidator;
+import com.curso.brewer.mail.Mailer;
 import com.curso.brewer.model.Cerveja;
 import com.curso.brewer.model.StatusVenda;
 import com.curso.brewer.model.TipoPessoa;
@@ -53,6 +54,9 @@ public class VendasController {
 	
 	@Autowired
 	private VendaValidator vendaValidator;
+	
+	@Autowired
+	private Mailer mailer;
 	
 	/* inicializar o validador
 	 * fazendo um vinculo com a classe de validação personalizada 
@@ -122,6 +126,9 @@ public class VendasController {
 		venda.setUsuario(usuario.getUsuario());		
 		
 		cadastroVendaService.salvar(venda);
+		
+		mailer.enviar();
+		
 		attr.addFlashAttribute("mensagem", "Venda salva e email enviado com sucesso");
 		return new ModelAndView("redirect:/vendas/nova");
 	}
