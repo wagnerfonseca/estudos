@@ -17,6 +17,8 @@ public class Mailer {
 	/** Este metodo vai ser executado de forma assincrona */
 	@Async
 	public void enviar(Venda venda) {
+		
+		/* Configurações simples para um envio de email */
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom("wag.b.fonseca@gmail.com");
 		message.setTo(venda.getCliente().getEmail());
