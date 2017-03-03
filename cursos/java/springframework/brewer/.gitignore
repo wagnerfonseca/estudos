@@ -115,3 +115,6 @@ fabric.properties
 .vscode
 
 src/main/resources/rebel.xml
+
+### Mail Sender - Send Grid ###
+mail.properties

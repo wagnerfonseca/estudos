@@ -9,6 +9,7 @@ import org.springframework.web.filter.HttpPutFormContentFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.curso.brewer.config.JPAConfig;
+import com.curso.brewer.config.MailConfig;
 import com.curso.brewer.config.SecurityConfig;
 import com.curso.brewer.config.ServiceConfig;
 import com.curso.brewer.config.WebConfig;
@@ -33,8 +34,11 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	protected Class<?>[] getServletConfigClasses() {	
 		/*
 		 * Configuração para o "DispatcherServlet", encontrar as minhas classes de controller
+		 * 
+		 * MailConfig.class
+		 * Para usar o template HTML do thymeleaf no envio de email
 		 * */
-		return new Class<?>[] { WebConfig.class };
+		return new Class<?>[] { WebConfig.class, MailConfig.class };
 	}
 
 	@Override
