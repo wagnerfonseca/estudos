@@ -24,8 +24,10 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
  * sobrescrendo os dados da primeira
  * 
  *  ignoreResourceNotFound = true <- caso o arquivo não existe, ignorar o erro 
+ *  Unix/Linux: file://${HOME}/.brewer-mail.properties
+ *  Windows: file:\\${USERPROFILE}\\.brewer-mail.properties
  * */
-@PropertySource(value = { "file://${HOME}/.brewer-mail.properties" }, ignoreResourceNotFound = true)
+@PropertySource(value = { "file:\\${USERPROFILE}\\.brewer-mail.properties" }, ignoreResourceNotFound = true)
 public class MailConfig {
 	
 	@Autowired
