@@ -12,6 +12,10 @@ public interface FotoStorage {
 	
 	void apagarFotoTemporaria(String nome);
 
-	void salvar(String foto);	
+	void salvar(String foto);
+	
+	byte[] recuperar(String foto);
+
+	byte[] recuperarThumbnail(String foto);	
 	
 }

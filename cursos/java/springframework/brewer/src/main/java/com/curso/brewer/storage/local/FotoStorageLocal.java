@@ -103,6 +103,20 @@ public class FotoStorageLocal implements FotoStorage {
 		}
 	}
 	
+	@Override
+	public byte[] recuperar(String nome) {
+		try {
+			return Files.readAllBytes(this.local.resolve(nome));
+		} catch (IOException e) {
+			throw new RuntimeException("Erro lendo a foto", e);
+		}
+	}
+	
+	@Override
+	public byte[] recuperarThumbnail(String foto) {
+		return recuperar("thumbnail." + foto);
+	}	
+	
 	private void criarPastas() {
 		try {
 			Files.createDirectories(this.local);
@@ -121,6 +135,7 @@ public class FotoStorageLocal implements FotoStorage {
 	private String renomearNomeArquivo(String nomeOriginal) {
 		String novoNome = UUID.randomUUID().toString() + nomeOriginal.substring(nomeOriginal.lastIndexOf('.'));
 		return novoNome;
-	}	
+	}
+
 	
 }
