@@ -18,7 +18,7 @@ public class CadastroVendaService {
 	private Vendas repository;
 	
 	@Transactional
-	public void salvar(Venda venda) {
+	public Venda salvar(Venda venda) {
 		if (venda.isNova())
 			venda.setDataCriacao(LocalDateTime.now());		
 		
@@ -37,7 +37,8 @@ public class CadastroVendaService {
 					, venda.getHorarioEntrega() != null ? venda.getHorarioEntrega() : LocalTime.NOON));
 		}
 				
-		repository.save(venda);
+		// saveAndFlush -> salva e retorna as alterações realizadas no banco de dados com o valor do id
+		return repository.saveAndFlush(venda);
 	}
 
 	@Transactional

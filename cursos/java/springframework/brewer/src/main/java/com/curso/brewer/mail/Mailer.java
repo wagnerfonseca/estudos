@@ -1,6 +1,7 @@
 package com.curso.brewer.mail;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -26,13 +27,13 @@ import com.curso.brewer.storage.FotoStorage;
 @Component
 public class Mailer {
 	
-	private static Logger logger = LoggerFactory.getLogger(Mailer.class);
+	private static Logger logger = LoggerFactory.getLogger(Mailer.class);	
 	
 	@Autowired
 	private JavaMailSender mailSender;
 	
 	@Autowired
-	private TemplateEngine thymeleaf;
+	private TemplateEngine thymeleaf; // O thymeleaf fica responsavel por executar o template do email
 	
 	@Autowired
 	private FotoStorage fotoStorage;
@@ -41,12 +42,14 @@ public class Mailer {
 	@Async
 	public void enviar(Venda venda) {
 		
-		Context context = new Context();
-		context.setVariable("venda", venda);
-		context.setVariable("logo", "logo");
+		Context context = new Context(new Locale("pt", "BR")); // Contexto 
+		context.setVariable("venda", venda); // Alguns objetos que devem ir para o contexto
+		context.setVariable("logo", "logo"); // Crio uma variavel com valor em string "logo"
 		
-		Map<String, String> fotos = new HashMap<>();
-		boolean adicionarMockCerveja = false;
+		// para buscar a foto da cerveja
+		// Executar antes de processar o contexto
+		Map<String, String> fotos = new HashMap<>(); // para cada foto tem um cid
+		boolean adicionarMockCerveja = false; 
 		for (ItemVenda item : venda.getItens()) {
 			Cerveja cerveja = item.getCerveja();
 			if (cerveja.temFoto()) {
@@ -61,23 +64,28 @@ public class Mailer {
 		}
 		
 		try {
-			String email = thymeleaf.process("mail/ResumoVenda", context);
+			String email = thymeleaf.process("mail/ResumoVenda", context); // processa o template junto com o Contexto
 			
 			MimeMessage mimeMessage = mailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-			helper.setFrom("teste@algaworks.com");
-			helper.setTo(venda.getCliente().getEmail());
-			helper.setSubject("Brewer - Venda realizada");
-			helper.setText(email, true);
+			boolean adicionarImagens = true; // Trabalhar com o envio de imagens no email
+			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, adicionarImagens, "UTF-8"); 
+			helper.setFrom("wag.b.fonseca@gmail.com");
 			
+			helper.setTo(venda.getCliente().getEmail());
+			helper.setSubject(String.format("Brewer - Venda nº %d", venda.getCodigo()));
+			helper.setText(email, true); // Corpo do email -- True porque é um HTML
+			
+			// "logo" -> nome da variavel
+			// ClassPathResource -> retorna o path da imagem
 			helper.addInline("logo", new ClassPathResource("static/images/logo-gray.png"));
 			
 			if (adicionarMockCerveja) {
 				helper.addInline("mockCerveja", new ClassPathResource("static/images/cerveja-mock.png"));
 			}
 			
+			// Adicionar o caminho da foto para cerveja no email
 			for (String cid : fotos.keySet()) {
-				String[] fotoContentType = fotos.get(cid).split("\\|");
+				String[] fotoContentType = fotos.get(cid).split("\\|");  /// Montando um vetor
 				String foto = fotoContentType[0];
 				String contentType = fotoContentType[1];
 				byte[] arrayFoto = fotoStorage.recuperarThumbnail(foto);

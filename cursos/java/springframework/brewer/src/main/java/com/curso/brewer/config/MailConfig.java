@@ -41,10 +41,11 @@ public class MailConfig {
 	public JavaMailSender mailSender() {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		mailSender.setHost("smtp.sendgrid.net");
-		mailSender.setPort(584);
+		mailSender.setPort(587);		
 		
 		mailSender.setUsername(env.getProperty("email.username"));
 		mailSender.setPassword(env.getProperty("email.password"));
+		
 		
 		Properties props = new Properties();
 		props.put("mail.transport.protocol", "smtp");

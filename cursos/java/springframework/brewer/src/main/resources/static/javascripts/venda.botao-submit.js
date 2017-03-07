@@ -20,6 +20,8 @@ Brewer.BotaoSubmit = (function(){
 		var botaoClicado = $(event.target);
 		var acao = botaoClicado.data('acao');
 		
+		console.log(acao)
+		
 		// Por isso é criado um input com a acao que foi selecionada
 		var acaoInput = $('<input>');
 		acaoInput.attr('name', acao);
@@ -29,6 +31,9 @@ Brewer.BotaoSubmit = (function(){
 		
 		// executo a acao do input
 		this.formulario.submit();
+		
+		
+
 	}
 	
 	return BotaoSubmit;

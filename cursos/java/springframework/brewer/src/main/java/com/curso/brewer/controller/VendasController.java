@@ -125,11 +125,11 @@ public class VendasController {
 		// @AuthenticationPrincipal recebendo o usuario logado
 		venda.setUsuario(usuario.getUsuario());		
 		
-		cadastroVendaService.salvar(venda);
+		venda = cadastroVendaService.salvar(venda);
 		
 		mailer.enviar(venda);
 		
-		attr.addFlashAttribute("mensagem", "Venda salva e email enviado com sucesso");
+		attr.addFlashAttribute("mensagem", String.format("Venda nº %d salva e email enviado com sucesso", venda.getCodigo()));
 		return new ModelAndView("redirect:/vendas/nova");
 	}
 	

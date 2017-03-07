@@ -195,16 +195,19 @@ public class Venda {
 		this.itens.forEach(i -> i.setVenda(this));
 	}	
 	
-	
-	/** Calcular o valor total */
-	public void calcularValorTotal() {
-		BigDecimal valorTotalItens = getItens().stream()
+	/** Calculando valor total dos itens */
+	public BigDecimal getValorTotalItens() {
+		return getItens().stream()
 				.map(ItemVenda::getValorTotal)
 				.reduce(BigDecimal::add)
 				.orElse(BigDecimal.ZERO);
-		
-		this.valorTotal = calcularValorTotal(valorTotalItens, getValorFrete(), getValorDesconto());
 	}
+	
+	/** Calcular o valor total */
+	public void calcularValorTotal() {	
+		this.valorTotal = calcularValorTotal(getValorTotalItens(), getValorFrete(), getValorDesconto());
+	}
+	
 	
 	private BigDecimal calcularValorTotal(BigDecimal valorTotalItens, BigDecimal valorFrete, BigDecimal valorDesconto) {
 		BigDecimal valorTotal = valorTotalItens
