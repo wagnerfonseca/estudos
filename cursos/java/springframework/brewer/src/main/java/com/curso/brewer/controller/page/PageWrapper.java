@@ -36,7 +36,8 @@ public class PageWrapper<T> {
 		String httpUrl = request.getRequestURL().append(
 				request.getQueryString() != null ? "?" + request.getQueryString() : "")
 				.toString()
-				.replaceAll("\\+", "%20");
+				.replaceAll("\\+", "%20")
+				.replaceAll("excluido", ""); // Remover o parametro "?excluido"
 		// Agora vou construir a minha URI apartir da minha string
 		this.uriBuilder = UriComponentsBuilder.fromHttpUrl(httpUrl);
 		

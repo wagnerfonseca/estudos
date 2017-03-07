@@ -1,5 +1,7 @@
 package com.curso.brewer.service;
 
+import javax.persistence.PersistenceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.curso.brewer.model.Cerveja;
 import com.curso.brewer.repository.Cervejas;
 import com.curso.brewer.service.event.cerveja.CervejaSalvaEvent;
+import com.curso.brewer.service.exception.ImpossivelExcluirEntidadeException;
+import com.curso.brewer.storage.FotoStorage;
 
 /*
  * Parece desnecessário criar uma classe de serviço para chamar os métodos do repository.
@@ -19,6 +23,9 @@ public class CadastroCervejaService {
 	
 	@Autowired
 	private Cervejas cervejas;
+	
+	@Autowired
+	private FotoStorage fotoStorage;
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
@@ -34,6 +41,19 @@ public class CadastroCervejaService {
 		 * por ex. Enviar Email, redimensionar foto, etc
 		 * */
 		publisher.publishEvent(new CervejaSalvaEvent(cerveja));
+	}
+	
+	
+	@Transactional
+	public void excluir(Cerveja cerveja) {
+		try {
+			String foto = cerveja.getFoto();
+			cervejas.delete(cerveja);
+			cervejas.flush(); // executar delete imediatamente no banco de dados
+			fotoStorage.excluir(foto);
+		} catch (PersistenceException e) {
+			throw new ImpossivelExcluirEntidadeException("Impossível apagar cerveja. Já foi usada em alguma venda.");
+		}
 	}
 	
 		
