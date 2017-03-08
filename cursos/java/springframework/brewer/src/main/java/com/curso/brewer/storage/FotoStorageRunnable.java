@@ -22,6 +22,8 @@ public class FotoStorageRunnable implements Runnable {
 		//String nome = files[0].getOriginalFilename();
 		String nome = this.fotoStorage.salvarTemporariamente(files);
 		String contentType = files[0].getContentType();
+		
+		// Momento que a Thread esta finalizada - retornando um objeto DTO 
 		this.result.setResult( new FotoDTO(nome, contentType) );
 	}
 

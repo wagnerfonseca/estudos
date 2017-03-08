@@ -130,9 +130,9 @@ public class FotoStorageLocal implements FotoStorage {
 	
 	private void criarPastas() {
 		try {
-			Files.createDirectories(this.local);
-			this.localTemporario = getDefault().getPath(this.local.toString(), "temp");
-			Files.createDirectories(this.localTemporario);
+			Files.createDirectories(this.local); // Cria a pasta de fotos
+			this.localTemporario = getDefault().getPath(this.local.toString(), "temp"); 
+			Files.createDirectories(this.localTemporario); // Cria a pasta temporaria
 			
 			LOG.debug("pastas criadas para salvar fotos");
 			LOG.debug("pastas default: " +  this.local.toAbsolutePath());
