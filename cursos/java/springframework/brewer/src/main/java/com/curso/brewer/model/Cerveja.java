@@ -179,6 +179,10 @@ public class Cerveja implements Serializable {
 		return !StringUtils.isEmpty(this.foto);
 	}
 	
+	public boolean isNova() {
+		return codigo == null;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

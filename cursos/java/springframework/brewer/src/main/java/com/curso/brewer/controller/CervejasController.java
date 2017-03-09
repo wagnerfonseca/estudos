@@ -121,4 +121,15 @@ public class CervejasController {
 		}
 		return ResponseEntity.ok().build();
 	}
+	
+	
+	/**
+	 * Editar uma cerveja
+	 * */
+	@GetMapping("/{codigo}")
+	public ModelAndView editar(@PathVariable("codigo") Cerveja cerveja) {
+		ModelAndView mv = novo(cerveja);
+		mv.addObject(cerveja); // Spring MVC deixa disponivel para edicao no cadastro de cerveja		
+		return mv;
+	}
 }
