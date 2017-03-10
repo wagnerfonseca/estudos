@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// a ordem das declarações influencia
+		// a ordem das declarações influência
 		http
 			.authorizeRequests()			
 				.antMatchers("/cidades/novo").hasRole("CADASTRAR_CIDADE")

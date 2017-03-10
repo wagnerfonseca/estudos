@@ -83,7 +83,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 	@Bean
 	public ViewResolver viewResolver() {
 		// Configurações referente ao ViewResolver do Spring
-		// Este "resolver" fica responsavel por pegar o "nome" e deveolver o arquivo html
+		// Este "resolver" fica responsavel por pegar o "nome" e devolver o arquivo html
 		ThymeleafViewResolver resolver = new ThymeleafViewResolver();
 		resolver.setTemplateEngine(templateEngine());
 		resolver.setCharacterEncoding("UTF-8");
@@ -133,7 +133,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 	// Necessário registar os conversores (Converter)
 	@Bean
 	public FormattingConversionService mvcConversionService() {
-		// Exmplo para converter um entidade
+		// Exemplo para converter uma entidade
 		DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService();
 		// Converter de Estilo
 		conversionService.addConverter(new EstilosConverter());

@@ -17,7 +17,7 @@ public class CervejaListener {
 	 * Seguindo o padrão javaBean no nome do método "isFoto", a condição pode ser assim : #event.foto
 	 * Mas caso o nome do método não segue o padrão JavaBean, a condição deve chamar o nome exato do evento: #event.temFoto()
 	 * */
-	@EventListener(condition = "#event.temFoto()")
+	@EventListener(condition = "#event.temFoto() and #event.novaFoto")
 	public void cervejaSalva(CervejaSalvaEvent event) {
 		
 		fotoStorage.salvar(event.getCerveja().getFoto());
