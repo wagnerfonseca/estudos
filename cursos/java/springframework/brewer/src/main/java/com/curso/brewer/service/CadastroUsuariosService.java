@@ -24,7 +24,7 @@ public class CadastroUsuariosService {
 	
 	@Transactional
 	public void salvar(Usuario usuario) throws EmailUsuarioJaCadastradoException, SenhaObrigatoriaUsuarioException {
-		Optional<Usuario> opt = usuarios.findByEmailOrCodigo(usuario.getEmail(), usuario.getCodigo());
+		Optional<Usuario> opt = usuarios.findByEmail(usuario.getEmail());
 		if (opt.isPresent() && !opt.get().equals(usuario))
 			throw new EmailUsuarioJaCadastradoException("Ja existe um usuário cadastrado com este email");
 		

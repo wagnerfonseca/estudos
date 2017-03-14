@@ -83,6 +83,7 @@ public class UsuariosImpl implements UsuariosQueries {
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Usuario.class);		
 		// Para resolver o problema de #LazyInitializationException #LazyInitilizer
 		criteria.createAlias("grupos", "g", JoinType.LEFT_OUTER_JOIN);
+		criteria.add(Restrictions.eq("codigo", codigo));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);		
 		return (Usuario) criteria.uniqueResult();
 	}
