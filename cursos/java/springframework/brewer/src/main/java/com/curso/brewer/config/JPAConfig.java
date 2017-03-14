@@ -62,6 +62,10 @@ public class JPAConfig {
 		// Informar o pacote onde se encontrao suas entidades
 		// getPackage().getName() <-  sempre busca o nome do pacote onde se encotra suas entidades
 		factory.setPackagesToScan(Cerveja.class.getPackage().getName());
+		
+		// Arquivo onde se encontra um select para consulta em um arquivo externo
+		factory.setMappingResources("sql/consultas-nativas.xml");
+		
 		factory.afterPropertiesSet(); // aplicar
 		return factory.getObject();
 	}

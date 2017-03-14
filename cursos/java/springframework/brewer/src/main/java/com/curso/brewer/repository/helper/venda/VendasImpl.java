@@ -1,10 +1,12 @@
 package com.curso.brewer.repository.helper.venda;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.MonthDay;
 import java.time.Year;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -23,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.curso.brewer.dto.VendaMes;
 import com.curso.brewer.model.StatusVenda;
 import com.curso.brewer.model.TipoPessoa;
 import com.curso.brewer.model.Venda;
@@ -91,6 +94,31 @@ public class VendasImpl implements VendasQueries {
 		);
 		return opt.orElse(BigDecimal.ZERO);
 	}
+	
+	/*
+	 * Executar uma consulta(select) de um arquivo externo
+	 * 
+	 * Para encontrar o arquivo, a configuração fica dentro de JPAConfig
+	 * */	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<VendaMes> totalPorMes() {
+		List<VendaMes> vendasMes = manager.createNamedQuery("Vendas.totalPorMes").getResultList();
+		
+		LocalDate hoje = LocalDate.now();
+		for (int i = 1; i <= 6; i++) {
+			String mesIdeal = String.format("%d/%02d", hoje.getYear(), hoje.getMonthValue());
+			
+			boolean possuiMes = vendasMes.stream().filter(v -> v.getMes().equals(mesIdeal)).findAny().isPresent();
+			if (!possuiMes) {
+				vendasMes.add(i - 1, new VendaMes(mesIdeal, 0));
+			}
+			
+			hoje = hoje.minusMonths(1);
+		}
+		
+		return vendasMes;
+	}	
 	
 	private Long total(VendaFilter filtro) {
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Venda.class);
