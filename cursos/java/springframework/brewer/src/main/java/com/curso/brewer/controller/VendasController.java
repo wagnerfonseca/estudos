@@ -73,8 +73,8 @@ public class VendasController {
 	@GetMapping("/nova")
 	public ModelAndView nova(Venda venda) {
 		ModelAndView mv = new ModelAndView("venda/CadastroVenda");		
-		if (StringUtils.isEmpty(venda.getUuid()))
-			venda.setUuid(UUID.randomUUID().toString());
+		
+		setUuid(venda);
 		
 		mv.addObject("itens", venda.getItens());
 		mv.addObject("valorFrete", venda.getValorFrete());
@@ -141,7 +141,7 @@ public class VendasController {
 	@PostMapping("/item")
 	public ModelAndView adicionarItem(Long codigoCerveja, String uuid) {
 		Cerveja cerveja = cervejas.findOne(codigoCerveja);
-		tabelaItensVenda.adicionarItem(uuid, cerveja);
+		tabelaItensVenda.adicionarItem(uuid, cerveja, 1);
 		
 		return getModelAndViewTabelaItens(uuid);
 	}
@@ -185,7 +185,7 @@ public class VendasController {
 	
 	@GetMapping
 	public ModelAndView pesquisar(VendaFilter vendaFilter,
-			@PageableDefault(size = 3) Pageable pageable, HttpServletRequest httpServletRequest) {
+			@PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("/venda/PesquisaVendas");
 		mv.addObject("todosStatus", StatusVenda.values());
 		mv.addObject("tiposPessoa", TipoPessoa.values());
@@ -194,6 +194,28 @@ public class VendasController {
 				, httpServletRequest);
 		mv.addObject("pagina", paginaWrapper);
 		return mv;
+	}
+	
+	@GetMapping("/{codigo}")
+	public ModelAndView editar(@PathVariable Long codigo) {
+		Venda venda = vendas.buscaVendaPorCodigoComItens(codigo);
+		
+		setUuid(venda);
+		
+		venda.getItens().forEach(
+				i -> {tabelaItensVenda.adicionarItem(venda.getUuid(), i.getCerveja(), i.getQuantidade());}
+		);
+		
+		ModelAndView mv = nova(venda); 
+		mv.addObject(venda);
+		
+		return mv;
+	}
+	
+	
+	private void setUuid(Venda venda) {
+		if (StringUtils.isEmpty(venda.getUuid()))
+			venda.setUuid(UUID.randomUUID().toString());
 	}
 
 	private ModelAndView getModelAndViewTabelaItens(String uuid) {

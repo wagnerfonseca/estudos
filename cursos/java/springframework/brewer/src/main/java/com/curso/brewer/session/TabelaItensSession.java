@@ -33,9 +33,9 @@ public class TabelaItensSession {
 	// Conjunto de tabelas itens de vendas
 	private Set<TabelaItensVenda> tabelas = new HashSet<>();
 
-	public void adicionarItem(String uuid, Cerveja cerveja) {
+	public void adicionarItem(String uuid, Cerveja cerveja, Integer quantidade) {
 		TabelaItensVenda tabela = getTabelaItensVenda(uuid);
-		tabela.adicionarItem(cerveja, 1);
+		tabela.adicionarItem(cerveja, quantidade);
 		tabelas.add(tabela);
 	}
 

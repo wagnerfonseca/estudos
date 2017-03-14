@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,8 +59,10 @@ public class Venda {
 	@JoinColumn(name="codigo_usuario", nullable=false)
 	private Usuario usuario;
 	
-	/* javax.persistence.CascadeType.ALL - para salvar os itens da venda */
-	@OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
+	/* javax.persistence.CascadeType.ALL - para salvar os itens da venda 
+	 * # orphanRemoval =  true -> utilizado para eliminar itens de venda que não tem pai, sem indicador no objeto filho do objeto pai
+	 * */
+	@OneToMany(mappedBy = "venda", cascade = CascadeType.ALL, orphanRemoval =  true)
 	private List<ItemVenda> itens = new ArrayList<>();
 	
 	@Transient
@@ -186,6 +189,16 @@ public class Venda {
 	public Boolean isNova() {
 		return this.codigo == null;
 	}
+	
+	/**
+	 * Para Calculo de dias da criacao da venda 
+	 * */
+	public Long getDiasCriacao() {
+		LocalDate inicio = dataCriacao != null ? dataCriacao.toLocalDate() : LocalDate.now();
+		// Classe util para trabalhar com data #TrabalharComDatas
+		return ChronoUnit.DAYS.between(inicio, LocalDate.now());
+	}
+	
 	
 	/**
 	 * Para cada item de venda, tenho que setar com o codigo da venda
