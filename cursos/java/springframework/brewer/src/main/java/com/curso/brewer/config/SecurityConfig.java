@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,6 +22,7 @@ import com.curso.brewer.security.AppUserDetailsService;
 
 @EnableWebSecurity // Ja tem a anotacao @Configuration
 @ComponentScan(basePackageClasses = AppUserDetailsService.class)
+@EnableGlobalMethodSecurity(prePostEnabled = true) // Habilita as anotações pre post podem ser acrescentadas nos diversos metodos do sistema brewer
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired

@@ -23,8 +23,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 @Entity
 @Table(name = "venda")
+@DynamicUpdate // Para atualizar somente o campo selecionado
 public class Venda {
 
 	@Id
@@ -188,6 +191,14 @@ public class Venda {
 
 	public Boolean isNova() {
 		return this.codigo == null;
+	}
+	
+	public boolean isSalvarPermitido() {
+		return !status.equals(StatusVenda.CANCELADA);
+	}
+	
+	public boolean isSalvarProibido() {
+		return !isSalvarPermitido();
 	}
 	
 	/**

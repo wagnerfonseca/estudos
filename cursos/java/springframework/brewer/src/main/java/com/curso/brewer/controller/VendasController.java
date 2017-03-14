@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -26,6 +27,7 @@ import com.curso.brewer.controller.page.PageWrapper;
 import com.curso.brewer.controller.validator.VendaValidator;
 import com.curso.brewer.mail.Mailer;
 import com.curso.brewer.model.Cerveja;
+import com.curso.brewer.model.ItemVenda;
 import com.curso.brewer.model.StatusVenda;
 import com.curso.brewer.model.TipoPessoa;
 import com.curso.brewer.model.Venda;
@@ -133,6 +135,19 @@ public class VendasController {
 		return new ModelAndView("redirect:/vendas/nova");
 	}
 	
+	@PostMapping(value = "/nova", params = "cancelar")
+	public ModelAndView cancelar(Venda venda, BindingResult result, RedirectAttributes attr, @AuthenticationPrincipal UsuarioSistema usuario) {
+		try {
+			cadastroVendaService.cancelar(venda);
+		} catch(AccessDeniedException e) {
+			return new ModelAndView("/403");
+		}
+		
+		attr.addFlashAttribute("mensagem", "Venda cancelada com sucesso");
+		return new ModelAndView("redirect:/vendas/" + venda.getCodigo());
+		
+	}
+	
 		
 	
 	/**
@@ -201,10 +216,9 @@ public class VendasController {
 		Venda venda = vendas.buscaVendaPorCodigoComItens(codigo);
 		
 		setUuid(venda);
-		
-		venda.getItens().forEach(
-				i -> {tabelaItensVenda.adicionarItem(venda.getUuid(), i.getCerveja(), i.getQuantidade());}
-		);
+		for (ItemVenda item : venda.getItens()) {
+			tabelaItensVenda.adicionarItem(venda.getUuid(), item.getCerveja(), item.getQuantidade());
+		}
 		
 		ModelAndView mv = nova(venda); 
 		mv.addObject(venda);

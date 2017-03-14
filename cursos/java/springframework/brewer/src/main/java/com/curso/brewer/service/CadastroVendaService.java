@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,11 @@ public class CadastroVendaService {
 	
 	@Transactional
 	public Venda salvar(Venda venda) {
+		
+		if (venda.isSalvarProibido()) {
+			throw new RuntimeException("Usuário tentando salvar uma venda proibida/cancelada");
+		}
+		
 		if (venda.isNova())
 			venda.setDataCriacao(LocalDateTime.now());		
 		
@@ -45,6 +51,24 @@ public class CadastroVendaService {
 	public void emitir(Venda venda) {
 		venda.setStatus(StatusVenda.EMITIDA);
 		salvar(venda);
+	}
+
+	/* 
+	 * #AcessoNegadoEmMetodos #SpringSecurity
+	 * @PreAuthorize Anotação para especificar o controle de acesso ao metodo 
+	 * A expressão será validada para decidir se a invocação do metodo é permitido ou não.
+	 * #venda é para identificar o obejto que esta sendo recebido pelo parametro do metodo
+	 * principal.usuario -> usuario logado
+	 * */
+	@PreAuthorize("#venda.usuario == principal.usuario or hasRole('CANCELAR_VENDA')")
+	@Transactional
+	public void cancelar(Venda venda) {
+		
+		Venda vendaExistente = repository.findOne(venda.getCodigo());
+		
+		vendaExistente.setStatus(StatusVenda.CANCELADA);
+		repository.save(vendaExistente);
+		
 	}
 
 	/*

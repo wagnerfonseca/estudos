@@ -45,12 +45,11 @@ public class VendasImpl implements VendasQueries {
 	
 	@Transactional(readOnly = true)
 	@Override
-	public Venda buscaVendaPorCodigoComItens(Long codigo) {
+	public Venda buscaVendaPorCodigoComItens(Long codigo) {			
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Venda.class);
 		criteria.createAlias("itens", "i", JoinType.LEFT_OUTER_JOIN);
 		criteria.add(Restrictions.eq("codigo", codigo));
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-				
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);				
 		return (Venda) criteria.uniqueResult();
 	}
 	
