@@ -24,16 +24,22 @@ public class CadastroUsuariosService {
 	
 	@Transactional
 	public void salvar(Usuario usuario) throws EmailUsuarioJaCadastradoException, SenhaObrigatoriaUsuarioException {
-		Optional<Usuario> opt = usuarios.findByEmail(usuario.getEmail());
-		if (opt.isPresent())
+		Optional<Usuario> opt = usuarios.findByEmailOrCodigo(usuario.getEmail(), usuario.getCodigo());
+		if (opt.isPresent() && !opt.get().equals(usuario))
 			throw new EmailUsuarioJaCadastradoException("Ja existe um usuário cadastrado com este email");
 		
 		if (usuario.isNovo() && StringUtils.isEmpty(usuario.getSenha()))
 			throw new SenhaObrigatoriaUsuarioException("Senha é obrigatória para novo usuário");
 		
-		if (usuario.isNovo()) {
+		if (usuario.isNovo() || !StringUtils.isEmpty(usuario.getSenha())) {
 			usuario.setSenha(this.passwordEncoder.encode(usuario.getSenha()));
-			usuario.setConfirmacaoSenha(usuario.getSenha());
+		} else if (StringUtils.isEmpty(usuario.getSenha())) {
+			usuario.setSenha(opt.get().getSenha());
+		}
+		usuario.setConfirmacaoSenha(usuario.getSenha());
+		
+		if (!usuario.isNovo() && usuario.getAtivo() == null) {
+			usuario.setAtivo(opt.get().getAtivo());
 		}
 		
 		usuarios.save(usuario);

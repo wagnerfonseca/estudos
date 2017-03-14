@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,7 +49,7 @@ public class UsuariosController {
 		return mv;
 	}
 	
-	@PostMapping("/novo")
+	@PostMapping({"/novo", "{\\d+}"})
 	public ModelAndView salvar(@Valid Usuario usuario, BindingResult result, RedirectAttributes attr) {
 		if (result.hasErrors()) {
 			return novo(usuario);
@@ -95,5 +96,18 @@ public class UsuariosController {
 		service.alterarStatus(codigos, status);
 	}
 	
+	
+	/** Aula: 25.3 Editar usuario
+	 * Ao editar um usuario por ser um cadastro de uma entidade ManyToMany como evitar a exception #LazyInitializationException */
+	@GetMapping("/{codigo}")
+	public ModelAndView editar(@PathVariable Long codigo) {
+		// buscar o usario com a lista de grupo e evitar o erro de #LazyInitializer
+		// Evitar anotar a propriedade da classe com (fetch "EAGER") 
+		Usuario usuario = usuarios.buscaPorCodigoComGrupos(codigo);		
+		ModelAndView mv = novo(usuario); 
+		mv.addObject(usuario);
+		
+		return mv;
+	}
 
 }
