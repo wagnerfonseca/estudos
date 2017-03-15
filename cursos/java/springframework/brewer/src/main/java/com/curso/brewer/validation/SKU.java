@@ -23,7 +23,9 @@ public @interface SKU {
 
 	// Para sobrescrever a messagem padrão do "Pattern"
 	@OverridesAttribute(constraint = Pattern.class, name = "message")
-	String message() default "SKU deve seguir o padrão DD9999(2 Digitos e 4 Caracteres)";
+	//String message() default "SKU deve seguir o padrão DD9999(2 Digitos e 4 Caracteres)";
+	String message() default "{com.curso.validator.constraints.SKU.message}";
+	
 	
 	// Propriedades obrigatórias em uma anotação
 	Class<?>[] groups() default {}; // para agrupar anotações

@@ -36,8 +36,11 @@ public class Cerveja implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long codigo;
 	
+	// Substituindo a mensagem de erro no momento da validação para os arquivos messages.properties
+	// (message = "O campo SKU é obrigatório") 
+	
 	@SKU
-	@NotBlank(message = "O campo SKU é obrigatório")
+	@NotBlank
 	private String sku;
 	
 	@NotBlank(message = "O campo \"nome\" é obrigatório")
