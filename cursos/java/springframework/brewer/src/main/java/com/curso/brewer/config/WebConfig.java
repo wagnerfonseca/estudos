@@ -163,6 +163,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 	@Bean
 	public LocaleResolver localeResolver() {
 		// Força o Spring a sempre interpretar todas as entradas de dados com o Padrão pt-BR
+		// Essa solução também é utilizada para auxilio na formatação numérica
 		return new FixedLocaleResolver(new Locale("pt", "BR"));
 	}
 	
