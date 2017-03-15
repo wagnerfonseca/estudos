@@ -2,7 +2,6 @@ package com.curso.brewer.config;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.BeansException;
@@ -19,16 +18,13 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
-import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.i18n.FixedLocaleResolver;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -37,6 +33,7 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import com.curso.brewer.config.format.BigDecimalFormatter;
 import com.curso.brewer.controller.CervejasController;
 import com.curso.brewer.controller.converter.CidadeConverter;
 import com.curso.brewer.controller.converter.EstadoConverter;
@@ -143,11 +140,13 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		
 		
 		//Converter  BigDecimal
-		NumberStyleFormatter bigDecimalFomatter = new NumberStyleFormatter("#,##0.00"); //
+		//NumberStyleFormatter bigDecimalFomatter = new NumberStyleFormatter("#,##0.00"); //solucao mais generica
+		BigDecimalFormatter bigDecimalFomatter = new BigDecimalFormatter("#,##0.00");
 		conversionService.addFormatterForFieldType(BigDecimal.class, bigDecimalFomatter);
 		
-		// Converter numero inteiros (Informar o pattern no padrão internacional)
-		NumberStyleFormatter integerFormatter = new NumberStyleFormatter("#,##0");
+		// Converter numeros inteiros (Informar o pattern no padrão internacional)
+		// NumberStyleFormatter integerFormatter = new NumberStyleFormatter("#,##0");
+		BigDecimalFormatter integerFormatter = new BigDecimalFormatter("#,##0");
 		conversionService.addFormatterForFieldType(Integer.class, integerFormatter);
 		
 		// API de Datas do Java 8
@@ -158,13 +157,6 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		dateTimeFormatter.registerFormatters(conversionService);
 		
 		return conversionService;
-	}
-	
-	@Bean
-	public LocaleResolver localeResolver() {
-		// Força o Spring a sempre interpretar todas as entradas de dados com o Padrão pt-BR
-		// Essa solução também é utilizada para auxilio na formatação numérica
-		return new FixedLocaleResolver(new Locale("pt", "BR"));
 	}
 	
 	/* Bean responsavel pelo cachemanento de dados */
@@ -200,5 +192,14 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 	public DomainClassConverter<FormattingConversionService> domainClassConverter() {
 		return new DomainClassConverter<FormattingConversionService>(mvcConversionService());
 	}
+	
+	/*
+	 * Foi utilizado para formatação Numérica
+	 * @Bean
+	public LocaleResolver localeResolver() {
+		// Força o Spring a sempre interpretar todas as entradas de dados com o Padrão pt-BR
+		// Essa solução também é utilizada para auxilio na formatação numérica
+		return new FixedLocaleResolver(new Locale("pt", "BR"));
+	}*/
 	
 }
