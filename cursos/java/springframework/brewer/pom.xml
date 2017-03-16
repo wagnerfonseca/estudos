@@ -75,6 +75,11 @@
 	</properties>
 
 	<build>
+	
+		<!-- Gera o nome do arquivo .war -->
+		<finalName>${project.artifactId}</finalName>
+		
+		
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
