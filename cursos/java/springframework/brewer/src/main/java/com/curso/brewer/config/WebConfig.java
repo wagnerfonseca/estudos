@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.BeansException;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
@@ -27,6 +29,8 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.jasperreports.JasperReportsMultiFormatView;
+import org.springframework.web.servlet.view.jasperreports.JasperReportsViewResolver;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -79,6 +83,20 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		this.applicationContext =  applicationContext;
 	}
 	
+	// View resolver para o JasperReports
+	@Bean
+	public ViewResolver jasperReportsViewResolver(DataSource dataSource) {
+		JasperReportsViewResolver resolver = new JasperReportsViewResolver();
+		resolver.setPrefix("classpath:/relatorios/"); // onde se encontra os arquivos .jasper
+		resolver.setSuffix(".jasper");
+		resolver.setViewNames("relatorio_*"); // facilitar o viewResolver encontrar o arquivo
+		resolver.setViewClass(JasperReportsMultiFormatView.class);
+		resolver.setJdbcDataSource(dataSource);
+		resolver.setOrder(0);
+		return resolver;
+	}
+	
+	// View resolver para o Thymeleaf
 	@Bean
 	public ViewResolver viewResolver() {
 		// Configurações referente ao ViewResolver do Spring
@@ -86,6 +104,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		ThymeleafViewResolver resolver = new ThymeleafViewResolver();
 		resolver.setTemplateEngine(templateEngine());
 		resolver.setCharacterEncoding("UTF-8");
+		resolver.setOrder(1); //ordem de carregamento pelo Spring MVC
 		return resolver;
 	}
 	
