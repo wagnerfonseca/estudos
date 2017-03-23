@@ -14,3 +14,13 @@ console.log(!'');
 console.log(!!NaN);
 console.log(!!null);
 console.log(!!undefined);
+
+var valor = 0;
+
+if (!valor)
+	console.log('o valor deve ser maior que 0');
+
+
+var numero = 10;
+if (numero)
+	console.log('o valo do numero somado a 10 é', numero + 10);
