@@ -26,14 +26,21 @@ var criarPessoa = function() {
   }
 }
 
-var pessoa = criarPessoa();
+var joao = criarPessoa();
+var maria = criarPessoa();
+
+joao.setNome('Joao Ninguem');
+joao.setIdade(67);
+
+console.log(joao.getNome());
+console.log(joao.getIdade());
+console.log(joao.calculaIdade());
 
 
-pessoa.setNome('Joao Ninguem');
-pessoa.setIdade(67);
+maria.setNome('Maria vai com as outras');
+maria.setIdade(16);
 
-
-console.log(pessoa.getNome());
-console.log(pessoa.getIdade());
-console.log(pessoa.calculaIdade());
+console.log(maria.getNome());
+console.log(maria.getIdade());
+console.log(maria.calculaIdade());
 
