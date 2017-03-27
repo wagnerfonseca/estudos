@@ -37,7 +37,7 @@ console.log(joao.getIdade());
 console.log(joao.calculaIdade());
 
 
-maria.setNome('Maria vai com as outras');
+maria.setNome('Maria');
 maria.setIdade(16);
 
 console.log(maria.getNome());
