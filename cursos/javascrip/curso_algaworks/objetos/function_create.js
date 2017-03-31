@@ -1,6 +1,8 @@
 var Carro = function(modelo, fabricante) {
 	this.modelo = modelo;
 	this.fabricante = fabricante;
+
+	
 }
 
 
