@@ -10,3 +10,6 @@ jsonlint.com
 
 // Express Load para carregamento automático das rotas do meus recursos
 npm install express-load --save
+
+// Body 
+npm install body-parser --save
