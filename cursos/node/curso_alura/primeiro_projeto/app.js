@@ -5,7 +5,7 @@ var app = require('./config/express')();
 // Isso foi configurado dentro da configuração de Express
 /*var routesIndex = require('./app/routes/index')(app);
 var routesProdutos = require('./app/routes/produtos')(app);*/
-
-app.listen(3000, function () {
-  console.log('Exemplo app ouvindo na porta 3000!');
+var PORT = 3000;
+app.listen(PORT, () => {
+  console.log('App ouvindo na porta %s!', PORT);
 });

@@ -5,8 +5,12 @@ var ProdutosDAO = function(connection) {
 };
 
 // crio uma nova propriedade para o meu produtos banco chamado 'lista'
-ProdutosDAO.prototype.lista = function(callback) {
+ProdutosDAO.prototype.findAll = function(callback) {
     this.connection.query('select * from livros', callback);
+}
+
+ProdutosDAO.prototype.save = function(produto,callback) {
+    this.connection.query('insert into livros set ?', produto, callback);
 }
 
 

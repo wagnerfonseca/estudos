@@ -6,9 +6,9 @@ module.exports = function(app) {
 
         var connection = app.db.connectionFactory();
         // palavra reservada 'new' define um novo escopo 
-        var produtos = new app.db.ProdutosDAO(connection);
+        var dao = new app.db.ProdutosDAO(connection);
 
-        produtos.lista(function(err, results) {
+        dao.findAll(function(err, results) {
             // retorna o recurso serializado em json
             // res.send(results);
             res.render('produtos/lista', { lista: results });
@@ -28,5 +28,22 @@ module.exports = function(app) {
     app.post('/produtos', function(req, res) {
         console.log('produtos save');
 
+        var produto = req.body;
+        
+        if (!req.body) {
+            console.log('erroooooooooooooooooooo');
+            return res.sendStatus(400);
+        }
+        
+    
+        console.log(produto);
+
+        // var connection = app.db.connectionFactory();
+        // var dao = new app.db.ProdutosDAO(connection);
+
+        // dao.save(produto, function(err, results){
+        //      res.redirect('/produtos');    
+        //   
+        // });
     });
 }
