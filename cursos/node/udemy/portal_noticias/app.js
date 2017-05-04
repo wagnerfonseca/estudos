@@ -1,6 +1,9 @@
-var express = require('express');
+var app = require('./config/server');
 
-var app = express();
+
+app.get('/', (req, res) => {
+    res.render('home/index');
+});
 
 var PORT = 3000;
 app.listen(PORT, () => {
