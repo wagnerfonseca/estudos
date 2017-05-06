@@ -1,6 +1,6 @@
 var app = require('./config/server');
 
-
+var routesNoticias = require('./app/routes/noticias')(app);
 
 var PORT = 3000;
 app.listen(PORT, () => {

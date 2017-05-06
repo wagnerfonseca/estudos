@@ -8,5 +8,22 @@
 
 		<h1>Notícias</h1>
 
+		<table style="width:100%">
+		<tr>
+			<th>Notícia</th>
+			<th>Conteúdo</th> 
+			<th>Data Criação</th>
+		</tr>
+
+		<% for(var i=0; i<noticias.length; i++) { %>
+		<tr>
+			<td><%=noticias[i].titulo%></td>
+			<td><%=noticias[i].noticia%></td> 
+			<td><%=noticias[i].data_criacao%></td>
+		</tr>
+		<%}%>
+		
+		</table>
+
 	</body>
 </html>
