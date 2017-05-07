@@ -5,8 +5,7 @@ var mysql = require('mysql');
 // vou empacotar ('wrapper') a funcao
 
 var dbConnection = function () {
-	// conectar ao banco de dados
-	console.log('iniciando conexao com o banco');
+	// conectar ao banco de dados	
 	return  mysql.createConnection({
 		host: 'localhost',
 		user: 'root',
@@ -17,7 +16,6 @@ var dbConnection = function () {
 
 module.exports = () => {
 	// apenas return a funcção, não a executo
-	// para executar, dbConnection(); 
-	console.log('iniciando o modulo do banco');
+	// para executar, dbConnection(); 	
 	return dbConnection;	
 }

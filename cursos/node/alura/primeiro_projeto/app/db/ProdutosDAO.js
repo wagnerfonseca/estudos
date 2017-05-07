@@ -9,7 +9,7 @@ ProdutosDAO.prototype.findAll = function(callback) {
     this.connection.query('select * from livros', callback);
 }
 
-ProdutosDAO.prototype.save = function(produto,callback) {
+ProdutosDAO.prototype.save = function(produto,callback) {		
     this.connection.query('insert into livros set ?', produto, callback);
 }
 
