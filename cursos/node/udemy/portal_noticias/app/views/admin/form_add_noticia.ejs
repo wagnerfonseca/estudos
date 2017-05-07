@@ -9,19 +9,18 @@
 		<h1>Adicionar notícia</h1>
 
 		<form action="/noticias/salvar" method="post">
-			
-			<label for="titulo">Título</label>
-			<input type="text" name="titulo" id="titulo" />
-			<br/>
-
-			<label for="noticia">Notícia</label>
-			<textarea rows="5" cols="15" name="noticia" id="noticia"></textarea>
-			<br/>
-			<input type="submit" value="Salvar" />
-
+			<div class="form-group">
+				<label for="titulo">Título</label>
+				<input type="text" name="titulo" id="titulo" />				
+			</div>			
+			<div class="form-group">
+				<label for="noticia">Notícia</label>
+				<textarea rows="5" cols="15" name="noticia" id="noticia"></textarea>
+			</div>
+			<div class="form-group">				
+				<input type="submit" value="Salvar" />
+			</div>
 		</form>
-
-
 
 	</body>
 </html>
