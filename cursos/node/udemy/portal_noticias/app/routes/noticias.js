@@ -1,4 +1,4 @@
-var dbConnection = require('./config/dbConnection');
+var dbConnection = require('../../config/dbConnection');
 
 module.exports = function(app) {
 

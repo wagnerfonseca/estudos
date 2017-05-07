@@ -1,7 +1,7 @@
 var mysql =  require('mysql');
 
 module.exports = function() {
-    console.log('realizando uma conecao com o servidor...');
+    console.log('realizando uma conexão com o servidor...');
     return mysql.createConnection({
         host: 'localhost',
         user: 'root',
