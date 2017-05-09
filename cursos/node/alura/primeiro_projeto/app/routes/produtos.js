@@ -33,31 +33,32 @@ module.exports = function(app) {
     });
 
     app.get('/produtos/new', function(req, res) {
-        res.render('produtos/form');
+        res.render('produtos/form', { errosValidacao: {}, produto: {} });
     });
 
     app.post('/produtos', function(req, res) {
         var produto = req.body;
 
         // Validações
-        var validadorTitulo = req.assert('titulo', 'Título é obrigatório');
-        validadorTitulo.notEmpty();
+        req.assert('titulo', 'Título é obrigatório').notEmpty();
+        req.assert('preco', 'Formator inválido').isFloat();
 
-        var errors = req.validationErrors();
-        if (errors) {
-            res.render('produto/new');
+        var erros = req.validationErrors();
+        if (erros) {
+            // caminho do formulário
+            res.render('produtos/form', { errosValidacao: erros, produto: produto });
             return;
         }
-        
-        if (!req.body) {            
+
+        if (!req.body) {
             return res.sendStatus(400);
         }
-        
+
         var connection = app.db.connectionFactory();
         var dao = new app.db.ProdutosDAO(connection);
-        
-        dao.save(produto, function(err, result){               
-            res.redirect('/produtos');   
+
+        dao.save(produto, function(err, result) {
+            res.redirect('/produtos');
         });
     });
 }
