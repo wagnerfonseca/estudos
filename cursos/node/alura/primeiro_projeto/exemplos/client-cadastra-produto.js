@@ -24,7 +24,7 @@ var client = http.request(config, function(res){
 });
 
 var produto = {
-	titulo: 'O programador pragmático',
+	titulo: '',
 	isbn: '9788577807000',
 	preco: 96.00
 }

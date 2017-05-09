@@ -46,7 +46,21 @@ module.exports = function(app) {
         var erros = req.validationErrors();
         if (erros) {
             // caminho do formulário
-            res.render('produtos/form', { errosValidacao: erros, produto: produto });
+            
+
+            res.format({
+                // Content Negociation
+                html: () => {
+                    // o recurso produz um resultado serializado em Html
+                    res.status(400).render('produtos/form', { errosValidacao: erros, produto: produto });
+                },
+                json: () => {
+                    // o recurso produz um resultado serializado em Json
+                    res.status(400).json(erros);
+                }
+
+            });
+
             return;
         }
 
