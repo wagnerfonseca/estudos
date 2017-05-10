@@ -13,3 +13,6 @@ npm install express-load --save
 
 // Body 
 npm install body-parser --save
+
+// Testes
+npm install mocha --save-dev
