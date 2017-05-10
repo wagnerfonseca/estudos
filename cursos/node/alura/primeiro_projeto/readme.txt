@@ -16,3 +16,4 @@ npm install body-parser --save
 
 // Testes
 npm install mocha --save-dev
+npm install supertest --save-dev
