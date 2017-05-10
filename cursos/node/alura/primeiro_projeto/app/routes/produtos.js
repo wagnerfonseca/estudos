@@ -3,7 +3,7 @@
 
 module.exports = function(app) {
     app.get('/produtos', function(req, res) {
-
+ 
         var connection = app.db.connectionFactory();
         // palavra reservada 'new' define um novo escopo 
         var dao = new app.db.ProdutosDAO(connection);
