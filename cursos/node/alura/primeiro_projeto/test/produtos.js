@@ -24,7 +24,7 @@ describe('ProdutosController', function(){
 	it('#Cadastro de novo produto com dados válidos', function(done) {
 		request.post('/produtos')
 			.send({titulo: 'Building and Testing with Gradle', isbn:'9972140025145', preco: 96.74})
-			.expect(400, done);
+			.expect(302, done);
 	});
 
 });
