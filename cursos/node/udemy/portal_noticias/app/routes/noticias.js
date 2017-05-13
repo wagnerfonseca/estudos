@@ -3,12 +3,17 @@ module.exports = function(app) {
 
     app.get('/noticias', function(req, res) {
 
-        var connection = app.config.dbConnection();
-        var dao = new app.app.models.NoticiasDAO(connection);
+        app.app.controllers.noticiaController.findAll(app, req, res);
 
-        dao.getNoticias(function(err, results) {
-            res.render('noticias/noticias', {noticias: results});
-        });
+    });
+
+    app.get('/noticia', function(req, res) {
+
+        app.app.controllers.noticiaController.findOne(app, req, res);
+
+        // connection.query('select * from noticias where id_noticias = 3', function(err, results) {
+        //     res.render('noticias/noticia', {noticia: results});
+        // });
 
     });
 

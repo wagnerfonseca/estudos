@@ -1,19 +1,13 @@
 module.exports = function(app) {
 
     app.get('/add', function(req, res) {
-        res.render('admin/form_add_noticia');
+        //res.render('admin/form_add_noticia', {errors: {}, noticia: {}});
+        app.app.controllers.adminController.add(app, req, res);
     });
 
-    app.post('/noticias/salvar', function(req, res) {
+    app.post('/noticias', function(req, res) {
 
-        var noticia = req.body;
-
-        var connection = app.config.dbConnection();
-        var dao = new app.app.models.NoticiasDAO(connection);
-
-        dao.save(noticia, function(err, result){
-            res.redirect('/noticias');
-        });
+        app.app.controllers.adminController.save(app, req, res);
 
     });
 
