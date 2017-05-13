@@ -6,8 +6,9 @@ NoticiasDAO.prototype.getNoticias = function(callback){
     this._connection.query('select * from noticias order by data_criacao desc', callback);
 }
 
-NoticiasDAO.prototype.getNoticia = function(callback){
-    this._connection.query('select * from noticias where id_noticias = 2', callback);
+NoticiasDAO.prototype.getNoticia = function(id, callback){
+    // vem um obejto id.'id_noticia' é o nome do parametro
+    this._connection.query('select * from noticias where id_noticias = ' + id.id_noticia, callback);
 }
 
 NoticiasDAO.prototype.save = function(src, callback) {        
