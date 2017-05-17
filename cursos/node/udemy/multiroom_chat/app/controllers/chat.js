@@ -16,5 +16,5 @@ module.exports.init = function(app, req, res) {
     // get para recuperar o valor da variavel 'io'
     app.get('io').emit('msgParaCliente', {apelido: dadosForm.apelido, mensagem: ' acabou de entrar no chat!'});
 
-    res.render('chat');
+    res.render('chat', {apelido: dadosForm.apelido});
 }

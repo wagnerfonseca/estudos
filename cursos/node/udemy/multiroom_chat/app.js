@@ -18,5 +18,14 @@ io.on('connection', function(socket) {
 
     socket.on('disconnect', function() {
         console.log('o usuário deixou a conexao websocket....');
-    })
+    });
+
+    socket.on('msgParaServidor', function(data) {
+        // so para o cliente que requisitou
+        socket.emit('msgParaCliente', {apelido: data.apelido, mensagem: data.mensagem });
+
+        // para os outros usuarios
+        socket.broadcast.emit('msgParaCliente', {apelido: data.apelido, mensagem: data.mensagem });
+    });
+
 });
