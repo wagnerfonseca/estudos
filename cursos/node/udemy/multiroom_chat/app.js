@@ -8,6 +8,9 @@ var server = app.listen(PORT,()=>{
 
 var io = require('socket.io').listen(server);
 
+// definindo uma variavel para o escopo global
+app.set('io', io);
+
 /* criar a conexao por websocket */
 io.on('connection', function(socket) {
     console.log('o usuário acabou de conectar!');
