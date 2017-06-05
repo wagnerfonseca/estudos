@@ -1,0 +1,14 @@
+{
+  "name": "uso_pack_underscore",
+  "version": "1.0.0",
+  "description": "Como utilizar o pacote Undercore a biblioteca mais popular do javaScript avaliada no NPM.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "underscore": "^1.8.3"
+  }
+}
