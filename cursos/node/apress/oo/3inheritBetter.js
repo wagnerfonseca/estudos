@@ -11,12 +11,13 @@ function Bird() { }
 
 // Para não perder as informações sobre o construtor
 Bird.prototype = Object.create(
-    Animal.prototype, {
-                        constructor: {
-                        value: Bird,
-                        enumerable: false,
-                        writable: true,
-                        configurable: true
+    Animal.prototype, 
+    {
+        constructor: {
+        value: Bird,
+        enumerable: false,
+        writable: true,
+        configurable: true
     }
 });
 
