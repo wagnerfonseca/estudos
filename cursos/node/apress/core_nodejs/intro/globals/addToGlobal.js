@@ -1,1 +1,0 @@
-global.algumaCoisa = 123456789;

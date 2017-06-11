@@ -1,1 +1,0 @@
-console.log(Math.min(3,6,1,10));
